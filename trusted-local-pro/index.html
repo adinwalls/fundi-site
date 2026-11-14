@@ -363,6 +363,14 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 .trust-item,.trust-item+.trust-item{border:0;background:#f7f6f0;border-radius:var(--radius)}
 .quick input,.quick select{background:#ffffff;border:0}
 .hero-light h1,.hero-light h1 span,.hero-light .lede,.hero-light .ticks li{color:var(--ink)}
+.quick-band .wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.quick-band .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quick-band .quick{max-width:none;margin:0;width:100%;justify-self:end}
+@media (max-width:900px){.quick-band .wrap{grid-template-columns:1fr}.quick-band .quick{order:-1;justify-self:stretch}}
+@media (max-width:480px){.quick-band .trust-grid{grid-template-columns:1fr}}
+.quick-band .trust-item .ico{display:none}
+.quick-band .trust-item{text-align:center;justify-content:center;align-items:center;padding:28px 22px}
+.quick-band .trust-item b{font-size:1.4rem;letter-spacing:0}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -431,6 +439,12 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 
   <section class="quick-band">
     <div class="wrap">
+      <div class="trust-grid">
+      <div class="trust-item"><svg class="ico"><use href="#i-pin"/></svg><div><b>Local to George</b><span>We live and work here, so we're close by when you need us.</span></div></div>
+      <div class="trust-item"><svg class="ico"><use href="#i-quote"/></svg><div><b>Free quotes</b><span>A clear, itemised price after a free site visit.</span></div></div>
+      <div class="trust-item"><svg class="ico"><use href="#i-calendar"/></svg><div><b>Reliable</b><span>We show up when we say, and work around your schedule.</span></div></div>
+      <div class="trust-item"><svg class="ico"><use href="#i-rand"/></svg><div><b>Budget-friendly</b><span>Competitive pricing, never at the cost of quality.</span></div></div>
+      </div>
       <div class="quick" id="quickWrap">
         <h2 class="caps">Quick quote</h2>
         <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
@@ -446,14 +460,6 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
       </div>
     </div>
   </section>
-  <div class="trust">
-    <div class="wrap">
-      <div class="trust-item"><svg class="ico"><use href="#i-pin"/></svg><div><b>Local to George</b><span>We live and work here, so we're close by when you need us.</span></div></div>
-      <div class="trust-item"><svg class="ico"><use href="#i-quote"/></svg><div><b>Free quotes</b><span>A clear, itemised price after a free site visit.</span></div></div>
-      <div class="trust-item"><svg class="ico"><use href="#i-calendar"/></svg><div><b>Reliable</b><span>We show up when we say, and work around your schedule.</span></div></div>
-      <div class="trust-item"><svg class="ico"><use href="#i-rand"/></svg><div><b>Budget-friendly</b><span>Competitive pricing, never at the cost of quality.</span></div></div>
-    </div>
-  </div>
 
   <section>
     <div class="wrap">
