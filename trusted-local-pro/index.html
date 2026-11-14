@@ -333,9 +333,9 @@ a.contact-card:hover{border-color:var(--forest)}
 .trust .wrap{gap:14px}
 .quick-band{padding-block:48px}
 .hero-grid{grid-template-columns:1fr 3fr}
-.hero-photo{margin:0}
-.hero-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center;border-radius:var(--radius);display:block}
-@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-photo img{aspect-ratio:4/3}}
+.hero-photo{margin:0;align-self:stretch}
+.hero-photo img{width:100%;height:100%;min-height:320px;object-fit:cover;object-position:center;border-radius:var(--radius);display:block}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-photo img{height:auto;min-height:0;aspect-ratio:4/3}}
 .hero-light .lede{margin-block:40px}
 .quick-band .quick{max-width:620px;margin:0 auto}
 .trust{border-bottom:0}
