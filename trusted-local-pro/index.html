@@ -216,6 +216,7 @@ input.err{border-color:var(--accent-dark)}
 /* Work strip */
 .work{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .work .ph{aspect-ratio:1}
+.work .photo-sq{width:100%;aspect-ratio:1;object-fit:cover;object-position:center 65%;border-radius:var(--radius)}
 .work figure{margin:0}
 .work figcaption{font-size:.88rem;color:var(--muted);margin-top:8px}
 @media (max-width:860px){.work{grid-template-columns:1fr 1fr}}
@@ -490,7 +491,7 @@ a.contact-card:hover{border-color:var(--forest)}
     <div class="wrap">
       <div class="sec-head"><p class="eyebrow">Recent work</p><h2 class="caps">Jobs around George</h2></div>
       <div class="work">
-        <figure><div class="ph"><span>Photo</span></div><figcaption>[Exterior repaint, residential]</figcaption></figure>
+        <figure><img class="photo-sq" src="shower-tiling.jpg" alt="Shower with a curved mosaic-tiled bench and large white wall tiles" width="900" height="1200" loading="lazy"><figcaption>Shower installation and tiling</figcaption></figure>
         <figure><div class="ph"><span>Photo</span></div><figcaption>[Flat roof waterproofing]</figcaption></figure>
         <figure><div class="ph"><span>Photo</span></div><figcaption>[Kitchen renovation]</figcaption></figure>
         <figure><div class="ph"><span>Photo</span></div><figcaption>[Office repaint, commercial]</figcaption></figure>
