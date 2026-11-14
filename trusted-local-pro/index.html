@@ -365,7 +365,8 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 .hero-light h1,.hero-light h1 span,.hero-light .lede,.hero-light .ticks li{color:var(--ink)}
 .quick-band .wrap{display:block}
 .quick-band .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.quick-band .quick{max-width:620px;margin:0 auto;width:100%}
+.quick-band .quick{max-width:none;margin:0 auto;width:100%}
+@media (min-width:901px){.quick-band .quick{width:33.333vw;min-width:340px}}
 @media (max-width:480px){.quick-band .trust-grid{grid-template-columns:1fr}}
 .quick-band .trust-item .ico{display:none}
 .quick-band .trust-item{text-align:left;justify-content:flex-start;align-items:flex-end;padding:28px 22px;background:#dee3e6}
