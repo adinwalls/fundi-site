@@ -121,10 +121,9 @@ section{padding-block:clamp(56px,8vw,96px)}
 
 /* Hero */
 .hero{padding-block:clamp(48px,7vw,88px);position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-60px;bottom:-40px;width:380px;height:356px;background:url(logo-brush.png) no-repeat center/contain;opacity:.09;pointer-events:none}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,5vw,72px);align-items:center;position:relative;z-index:1}
 .hero h1{font-size:clamp(2.2rem,5.2vw,3.9rem);font-weight:600;letter-spacing:.03em;text-transform:uppercase;margin:16px 0 20px}
-.hero h1 span{display:block;font-size:.46em;letter-spacing:.2em;line-height:1.4;color:var(--on-forest-muted);font-weight:500;margin-top:14px}
+.hero h1 span{display:block;font-size:.31em;letter-spacing:.2em;line-height:1.4;color:var(--on-forest-muted);font-weight:500;margin-top:14px}
 .hero .lede{color:var(--on-forest-muted)}
 .hero .eyebrow{color:var(--accent-soft)}
 .hero .btn-row{margin-top:30px}
@@ -325,6 +324,74 @@ a.contact-card:hover{border-color:var(--forest)}
 .foot-base .tl{letter-spacing:.24em;text-transform:uppercase}
 @media (max-width:820px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:1/-1}}
 .svc h3,.svc p,.svc .more,.svc.alt h3,.svc.alt p,.svc.alt .more{color:#2d2926}
+.hero-light{background:#ffffff;color:var(--ink)}
+.hero-light .eyebrow{color:#c0ab6a}
+.hero-light .ticks .ico{color:var(--accent-dark)}
+.hero-light .btn-accent{background:#dee3e6;color:var(--ink)}
+.hero-light .btn-accent:hover{background:#cfd7db}
+.quick{background:#f7f6f0;box-shadow:none}
+.trust .wrap{gap:14px}
+.quick-band{padding-top:30px;padding-bottom:18px}
+.hero-grid{grid-template-columns:1fr 3fr}
+.hero-photo{margin:0;align-self:stretch}
+.hero-photo img{width:100%;height:100%;min-height:320px;object-fit:cover;object-position:center;border-radius:var(--radius);display:block}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-photo img{height:auto;min-height:0;aspect-ratio:4/3}}
+.site-head .brand{margin-top:30px}
+.nav a:hover,.nav a[aria-current="page"]{border-bottom-color:var(--accent)}
+.nav a{font-weight:600}
+.site-head .nav,.site-head .head-actions{margin-top:30px}
+.site-head{border-bottom:0}
+.site-head{padding-top:20px;padding-bottom:20px}
+.nav a{font-weight:500}
+.hero-light .lede{margin-block:40px}
+.quick-band .quick{max-width:620px;margin:0 auto}
+.trust{border-bottom:0}
+.trust .trust-item .ico{display:none}
+.trust .trust-item b{letter-spacing:0}
+.trust .trust-item{text-align:center;justify-content:center}
+.trust .trust-item b{font-size:1.4rem}
+.stars{color:#d6c284}
+.work{grid-template-columns:repeat(2,minmax(0,1fr))}
+.work .photo-sq{transition:filter .25s ease}
+.work figure:hover .photo-sq{filter:brightness(.55)}
+.head-call{display:none}
+.head-actions .icon-btn{margin-left:20px}
+.btn-line:hover,.on-dark .btn-line:hover{background:#d6c284;color:var(--forest-ink);border-color:#d6c284}
+h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{color:#2d2926}
+.on-dark h1,.on-dark h2,.on-dark h3,.on-dark .quote-line,.on-dark .rating b,.on-dark .sign b,.site-foot h4,.cta-band h2,.cta-band h3,.next h2,.next h3{color:var(--on-forest)}
+.hero-light h1{color:#2d2926}
+.trust-item,.trust-item+.trust-item{border:0;background:#f7f6f0;border-radius:var(--radius)}
+.quick input,.quick select{background:#ffffff;border:0}
+.hero-light h1,.hero-light h1 span,.hero-light .lede,.hero-light .ticks li{color:var(--ink)}
+.quick-band .wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.quick-band .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quick-band .quick{max-width:none;margin:0;width:100%;justify-self:end}
+@media (max-width:900px){.quick-band .wrap{grid-template-columns:1fr}.quick-band .quick{order:-1;justify-self:stretch}}
+@media (max-width:480px){.quick-band .trust-grid{grid-template-columns:1fr}}
+.quick-band .trust-item .ico{display:none}
+.quick-band .trust-item{text-align:left;justify-content:flex-start;align-items:flex-end;padding:28px 22px;background:#dee3e6}
+.quick-band .trust-item b{font-size:1.4rem;letter-spacing:0;text-transform:uppercase;font-weight:500}
+.quick-band .quick{padding:22px 22px}
+.quick-band .quick h2{font-size:1.4rem}
+.quick-band .quick p.sub{margin:2px 0 10px;font-size:.9rem}
+.quick-band .quick form{gap:8px}
+.quick-band .quick label{margin-bottom:4px}
+.quick-band .quick input,.quick-band .quick select{padding-block:9px}
+.quick-band .quick .fine{margin-top:0}
+@media (min-width:901px){.quick-band .wrap{align-items:stretch}.quick-band .trust-grid{grid-template-rows:1fr 1fr}.quick-band .trust-item{height:100%}}
+.svc.alt{background:#d6c284;border-color:#d6c284}
+.quick-band .wrap{display:block}
+@media (min-width:901px){.quick-band .trust-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto;width:100%;margin:0 auto}.quick-band .trust-item{height:auto}}
+.quick-band .trust-item b{margin-top:50px}
+.quick-band .trust-item:first-child{background:#c0ab6a}
+.quick-band .trust-item:nth-child(3){background:#c8c097}
+.quick-band .trust-grid{gap:40px}
+.quick-band .trust-item:nth-child(2){background:#f0f0e0}
+.quick-band .trust-item{padding:48px 42px}
+.quick-band .trust-item b::before{content:"";display:block;width:40px;height:1px;background:#2d2926;margin-bottom:14px}
+#quickWrap h2{font-size:1.4rem;border-top:1px solid #2d2926;padding-top:20px}
+#whyQuote{border-left-color:#d6c284}
+#qq-svc{-webkit-appearance:none;appearance:none;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232d2926' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:12px 8px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -350,15 +417,6 @@ a.contact-card:hover{border-color:var(--forest)}
   </defs>
 </svg>
 
-<div class="strip">
-  <div class="wrap">
-    <ul>
-      <li><svg class="ico"><use href="#i-check"/></svg>Free quotes &amp; site visits</li>
-      <li><svg class="ico"><use href="#i-pin"/></svg>Based in George, Western Cape</li>
-    </ul>
-    <span class="mock">Design mockup · striped panels mark where photos go</span>
-  </div>
-</div>
 
 <header class="site-head" id="top">
   <div class="wrap head-row">
@@ -380,11 +438,12 @@ a.contact-card:hover{border-color:var(--forest)}
 <main>
 <!-- ================= HOME ================= -->
 <div class="view" data-view="home">
-  <section class="hero band-forest on-dark">
+  <section class="hero hero-light">
     <div class="wrap hero-grid">
+      <figure class="hero-photo"><img src="hero-photo.jpg" alt="Finished family home with a covered patio and tiled terrace" width="900" height="828"></figure>
       <div>
-        <p class="eyebrow">Painting + Building · George &amp; surrounds</p>
-        <h1>Your trusted local Handy Men<span>Painting · Waterproofing · Renovations</span></h1>
+        <p class="eyebrow">George &amp; surrounds</p>
+        <h1>Your trusted local Handy Man<span>Painting · Waterproofing · Building · Renovations</span></h1>
         <p class="lede">From a leaking roof to a full repaint or a new extension, Fundi Maintenance does the job properly, on budget and on time, for homes and businesses across George.</p>
         <div class="btn-row">
           <a class="btn btn-accent" href="mailto:fundimaintenance@outlook.com?subject=Free%20Quote">Get my free quote <svg class="ico"><use href="#i-arrow"/></svg></a>
@@ -396,35 +455,23 @@ a.contact-card:hover{border-color:var(--forest)}
           <li><svg class="ico"><use href="#i-check"/></svg>Homes &amp; businesses</li>
         </ul>
       </div>
-      <div class="quick" id="quickWrap">
-        <h2 class="caps">Quick quote</h2>
-        <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
-        <form id="quickForm" novalidate>
-          <div><label for="qq-name">Your name</label><input id="qq-name" autocomplete="name" placeholder="e.g. Thandi Mokoena"></div>
-          <div><label for="qq-phone">Phone number</label><input id="qq-phone" type="tel" autocomplete="tel" placeholder="e.g. 082 123 4567"></div>
-          <div><label for="qq-svc">What do you need?</label>
-            <select id="qq-svc"><option>Painting</option><option>Waterproofing</option><option>Building &amp; renovations</option><option>Maintenance &amp; repairs</option><option>Commercial property work</option><option>Not sure yet</option></select>
-          </div>
-          <button class="btn btn-accent" type="submit">Call me back</button>
-          <p class="fine">Mockup only: this form doesn't send yet.</p>
-        </form>
+    </div>
+  </section>
+
+  <section class="quick-band">
+    <div class="wrap">
+      <div class="trust-grid">
+      <div class="trust-item"><svg class="ico"><use href="#i-pin"/></svg><div><b>Local to George</b><span>We live and work here, so we're close by when you need us.</span></div></div>
+      <div class="trust-item"><svg class="ico"><use href="#i-rand"/></svg><div><b>Budget-friendly</b><span>Competitive pricing, never at the cost of quality.</span></div></div>
+      <div class="trust-item"><svg class="ico"><use href="#i-calendar"/></svg><div><b>Reliable</b><span>We show up when we say, and work around your schedule.</span></div></div>
       </div>
     </div>
   </section>
 
-  <div class="trust">
-    <div class="wrap">
-      <div class="trust-item"><svg class="ico"><use href="#i-pin"/></svg><div><b>Local to George</b><span>We live and work here, so we're close by when you need us.</span></div></div>
-      <div class="trust-item"><svg class="ico"><use href="#i-quote"/></svg><div><b>Free quotes</b><span>A clear, itemised price after a free site visit.</span></div></div>
-      <div class="trust-item"><svg class="ico"><use href="#i-calendar"/></svg><div><b>Reliable</b><span>We show up when we say, and work around your schedule.</span></div></div>
-      <div class="trust-item"><svg class="ico"><use href="#i-rand"/></svg><div><b>Budget-friendly</b><span>Competitive pricing, never at the cost of quality.</span></div></div>
-    </div>
-  </div>
-
   <section>
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">What we do</p>
+        <p class="eyebrow" style="border-top:1px solid #2d2926;padding-top:20px;color:#c0ab6a">What we do</p>
         <h2 class="caps" style="color:#2d2926">One team for the whole job</h2>
         <p class="lede">Painting, building and maintaining private homes and commercial buildings in George and the surrounding areas.</p>
       </div>
@@ -441,14 +488,26 @@ a.contact-card:hover{border-color:var(--forest)}
 
   <section class="band-paper">
     <div class="wrap split" style="align-items:start">
-      <img class="photo" src="george-home.jpg" alt="Two-storey home with a freshly painted cream exterior, a covered patio and a lawn under a blue sky" width="960" height="960" loading="lazy">
+      <div class="quick" id="quickWrap" style="align-self:start">
+        <h2 class="caps">Quick quote</h2>
+        <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
+        <form id="quickForm" novalidate>
+          <div><label for="qq-name">Your name</label><input id="qq-name" autocomplete="name" placeholder="e.g. Thandi Mokoena"></div>
+          <div><label for="qq-phone">Phone number</label><input id="qq-phone" type="tel" autocomplete="tel" placeholder="e.g. 082 123 4567"></div>
+          <div><label for="qq-svc">What do you need?</label>
+            <select id="qq-svc"><option>Painting</option><option>Waterproofing</option><option>Building &amp; renovations</option><option>Maintenance &amp; repairs</option><option>Commercial property work</option><option>Not sure yet</option></select>
+          </div>
+          <button class="btn btn-accent" type="submit">Contact me</button>
+          <p class="fine">Opens WhatsApp to 079 827 8123 with your details. Press send there.</p>
+        </form>
+      </div>
       <div class="copy">
-        <p class="eyebrow">Why George property owners choose us</p>
+        <p class="eyebrow" style="color:#d6c284">Why George property owners choose us</p>
         <h2 class="caps">Budget-minded, never at the cost of quality</h2>
         <p>Every project gets a personal approach, tailored to your space, your needs and your wallet. No cookie-cutter solutions, just work that fits you.</p>
         <p>Most people wait for something to break before they renovate. We believe the real magic is renovating to upgrade your lifestyle, not just to fix problems.</p>
-        <p class="quote-line">You know that feeling when your house looks fine, but doesn't really feel like you anymore? That's your sign.</p>
-        <div class="btn-row" style="margin-top:28px"><a class="btn btn-accent" href="#quote">Start with a free quote</a><a class="btn btn-line" href="#about">About Fundi</a></div>
+        <p class="quote-line" id="whyQuote">You know that feeling when your house looks fine, but doesn't really feel like you anymore? That's your sign.</p>
+        <div class="btn-row" style="margin-top:28px"><a class="btn btn-line" href="#about">About Fundi</a></div>
       </div>
     </div>
   </section>
@@ -485,7 +544,7 @@ a.contact-card:hover{border-color:var(--forest)}
 
   <section class="band-paper">
     <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Recent work</p><h2 class="caps">Jobs around George</h2></div>
+      <div class="sec-head"><p class="eyebrow" style="color:#d6c284">Recent work</p><h2 class="caps">Jobs around George</h2></div>
       <div class="work">
         <figure><img class="photo-sq" src="shower-tiling.jpg" alt="Shower with a curved mosaic-tiled bench and large white wall tiles" width="900" height="1200" loading="lazy"><figcaption>Shower installation and tiling</figcaption></figure>
         <figure><img class="photo-sq" src="bathroom-screed.jpg" alt="Renovated bathroom with a white bath, pedestal basin, round mirror and a dark screeded floor" width="900" height="900" loading="lazy"><figcaption>Bathroom renovation with screeded floors</figcaption></figure>
@@ -716,9 +775,13 @@ a.contact-card:hover{border-color:var(--forest)}
     e.preventDefault();
     var n=need('qq-name','Please add your name');if(!n)return;
     if(!need('qq-phone','Please add a number'))return;
+    var ph=document.getElementById('qq-phone').value.trim();
+    var svc=document.getElementById('qq-svc').value;
+    var msg='Quick quote request%0AName: '+encodeURIComponent(n)+'%0APhone: '+encodeURIComponent(ph)+'%0AService: '+encodeURIComponent(svc);
+    window.open('https://wa.me/27798278123?text='+msg,'_blank','noopener');
     var f=this;f.querySelectorAll('input,select,button').forEach(function(x){x.disabled=true});
     var d=document.createElement('div');d.className='sent';
-    d.innerHTML='<p class="eyebrow">Preview</p><h3>Thanks, '+clean(n)+'</h3><p>On the live site Fundi would get your number and call you back. In this mockup nothing was sent.</p>';
+    d.innerHTML='<p class="eyebrow">Sent</p><h3>Thanks, '+clean(n)+'</h3><p>WhatsApp has opened with your details ready. Press send there and we will get back to you, usually the same day.</p>';
     f.replaceWith(d);
   });
   document.getElementById('quoteForm').addEventListener('submit',function(e){
