@@ -380,6 +380,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 .quick-band .quick .fine{margin-top:0}
 @media (min-width:901px){.quick-band .wrap{align-items:stretch}.quick-band .trust-grid{grid-template-rows:1fr 1fr}.quick-band .trust-item{height:100%}}
 .svc.alt{background:#d6c284;border-color:#d6c284}
+.quick-band .wrap{display:block}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -454,19 +455,6 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
       <div class="trust-item"><svg class="ico"><use href="#i-calendar"/></svg><div><b>Reliable</b><span>We show up when we say, and work around your schedule.</span></div></div>
       <div class="trust-item"><svg class="ico"><use href="#i-quote"/></svg><div><b>Free quotes</b><span>A clear, itemised price after a free site visit.</span></div></div>
       </div>
-      <div class="quick" id="quickWrap">
-        <h2 class="caps">Quick quote</h2>
-        <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
-        <form id="quickForm" novalidate>
-          <div><label for="qq-name">Your name</label><input id="qq-name" autocomplete="name" placeholder="e.g. Thandi Mokoena"></div>
-          <div><label for="qq-phone">Phone number</label><input id="qq-phone" type="tel" autocomplete="tel" placeholder="e.g. 082 123 4567"></div>
-          <div><label for="qq-svc">What do you need?</label>
-            <select id="qq-svc"><option>Painting</option><option>Waterproofing</option><option>Building &amp; renovations</option><option>Maintenance &amp; repairs</option><option>Commercial property work</option><option>Not sure yet</option></select>
-          </div>
-          <button class="btn btn-accent" type="submit">Contact me</button>
-          <p class="fine">Opens WhatsApp to 079 827 8123 with your details. Press send there.</p>
-        </form>
-      </div>
     </div>
   </section>
 
@@ -490,7 +478,19 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 
   <section class="band-paper">
     <div class="wrap split" style="align-items:start">
-      <img class="photo" src="george-home.jpg" alt="Two-storey home with a freshly painted cream exterior, a covered patio and a lawn under a blue sky" width="960" height="960" loading="lazy">
+      <div class="quick" id="quickWrap" style="align-self:start">
+        <h2 class="caps">Quick quote</h2>
+        <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
+        <form id="quickForm" novalidate>
+          <div><label for="qq-name">Your name</label><input id="qq-name" autocomplete="name" placeholder="e.g. Thandi Mokoena"></div>
+          <div><label for="qq-phone">Phone number</label><input id="qq-phone" type="tel" autocomplete="tel" placeholder="e.g. 082 123 4567"></div>
+          <div><label for="qq-svc">What do you need?</label>
+            <select id="qq-svc"><option>Painting</option><option>Waterproofing</option><option>Building &amp; renovations</option><option>Maintenance &amp; repairs</option><option>Commercial property work</option><option>Not sure yet</option></select>
+          </div>
+          <button class="btn btn-accent" type="submit">Contact me</button>
+          <p class="fine">Opens WhatsApp to 079 827 8123 with your details. Press send there.</p>
+        </form>
+      </div>
       <div class="copy">
         <p class="eyebrow" style="color:#d6c284">Why George property owners choose us</p>
         <h2 class="caps">Budget-minded, never at the cost of quality</h2>
