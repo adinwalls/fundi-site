@@ -351,7 +351,8 @@ a.contact-card:hover{border-color:var(--forest)}
 .trust .trust-item{text-align:center;justify-content:center}
 .trust .trust-item b{font-size:1.4rem}
 .stars{color:#d6c284}
-.work{grid-template-columns:repeat(2,minmax(0,1fr))}
+.work{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:860px){.work{grid-template-columns:1fr 1fr}}
 .work .photo-sq{transition:filter .25s ease}
 .work figure:hover .photo-sq{filter:brightness(.55)}
 .head-call{display:none}
@@ -407,6 +408,36 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 #stepsBand .eyebrow{color:#b49d62 !important}
 #stepsBand .steps li::before{color:#7ca5be;border-color:#7ca5be}
 #stepsBand .steps li:not(:last-child)::after{border-top-color:#b49d62}
+#ctaDream{background:#ffffff}
+#ctaDream *{color:#2d2926}
+footer.site-foot{background:#f8f7f3}
+footer.site-foot, footer.site-foot *{color:#5c6139}
+#ctaDream .btn-accent{background:#dee3e6;border-color:#dee3e6}
+#quoteHead{background:#dee3e6}
+#quoteHead *{color:#2d2926}
+#aboutHead{background:#dee3e6}
+#aboutHead *{color:#2d2926}
+#servicesHead{background:#dee3e6}
+#servicesHead *{color:#2d2926}
+#servicesHead .btn-accent{background:#f6fcff;border-color:#f6fcff}
+#servicesHead .btn-accent:hover{background:#e6f1f8}
+[data-view="services"] .svc-row:not(:last-child) .svc-ico{color:#222b30}
+#paintQuote{background:#dee3e6;border-color:#dee3e6}
+#paintQuote:hover{background:#cfd7db}
+.svc-row .btn-accent,[data-view="services"] .cta-band .btn-accent{background:#dee3e6;border-color:#dee3e6}
+.svc-row .btn-accent:hover,[data-view="services"] .cta-band .btn-accent:hover{background:#cfd7db}
+#quoteForm button.btn-accent{background:#dee3e6;border-color:#dee3e6}
+.next{background:#d6c284}
+.next, .next h2, .next h3, .next p, .next ol, .next li{color:#2d2926}
+.contact-card.wa .svc-ico{background:var(--paper);color:var(--forest)}
+main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figcaption,blockquote,button,input,select,textarea,em,td,th):not(.stars){color:#222b30 !important}
+.foot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:820px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:auto}}
+.foot-grid{text-align:center}
+.foot-grid ul{justify-items:center}
+.contact-card{background:#f7f6f0;border:0}
+.contact-card .svc-ico,.contact-card.wa .svc-ico{background:#eeece2}
+#q-prop,#q-when{-webkit-appearance:none;appearance:none;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232d2926' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:12px 8px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -565,11 +596,19 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
         <figure><img class="photo-sq" src="bathroom-screed.jpg" alt="Renovated bathroom with a white bath, pedestal basin, round mirror and a dark screeded floor" width="900" height="900" loading="lazy"><figcaption>Bathroom renovation with screeded floors</figcaption></figure>
         <figure><img class="photo-sq" src="sliding-gate.jpg" alt="Black steel sliding gate with vertical bars and an automatic gate motor" width="1000" height="750" loading="lazy"><figcaption>Sliding gate</figcaption></figure>
         <figure><img class="photo-sq" src="patio-roof.jpg" alt="New patio with a timber pergola, corrugated roof sheeting and a freshly poured cement floor" width="900" height="900" loading="lazy"><figcaption>Patio roof and cement floor</figcaption></figure>
+        <figure><img class="photo-sq" src="brick-pillars.jpg" alt="Brick pillars and a freshly poured concrete path beside a white cottage with a blue roof" width="960" height="960" loading="lazy"><figcaption>Brick work and pillars</figcaption></figure>
+        <figure><img class="photo-sq" src="granite-pavement.jpg" alt="Light granite paving slabs laid along a street edge with a gravel bed and a wooden bollard" width="960" height="1280" loading="lazy"><figcaption>Laying granite stone on pavement</figcaption></figure>
+        <figure><img class="photo-sq" src="paint-job.jpg" alt="White-railed flat roof terrace with a grey waterproofed floor and pale blue parapet walls" width="1280" height="960" loading="lazy"><figcaption>Paint job</figcaption></figure>
+        <figure><img class="photo-sq" src="clear-view-fencing.jpg" alt="Black metal clear-view fencing with vertical bars and square posts" width="1280" height="717" loading="lazy"><figcaption>Clear view fencing</figcaption></figure>
+        <figure><img class="photo-sq" src="shop-fitting.jpg" alt="Blue wire-mesh shop display walls and shelving fitted inside a shop with yellow walls" width="1280" height="960" loading="lazy"><figcaption>Shop fitting</figcaption></figure>
+        <figure><img class="photo-sq" src="painting.jpg" alt="Freshly painted white boundary wall with a white steel gate and a dark tree beside a driveway" width="1280" height="960" loading="lazy"><figcaption>Painting</figcaption></figure>
+        <figure><img class="photo-sq" src="painting-2.jpg" alt="Newly plastered and primed house exterior with a worker on a green ladder" width="1280" height="960" loading="lazy"><figcaption>Painting (Exterior)</figcaption></figure>
+        <figure><img class="photo-sq" src="painting-interior.jpg" alt="Interior living area with fresh grey walls, furniture covered in dust sheets and a kitchen beyond" width="1280" height="960" loading="lazy"><figcaption>Painting (Interior)</figcaption></figure>
       </div>
     </div>
   </section>
 
-  <section class="cta-band on-dark">
+  <section class="cta-band on-dark" id="ctaDream">
     <div class="wrap">
       <p class="tagline">Dream it<i>·</i>Renovate<i>·</i>Love it</p>
       <p>Ready to transform your space or start that big build? Call or WhatsApp today for a free quote.</p>
@@ -581,7 +620,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 
 <!-- ================= SERVICES ================= -->
 <div class="view" data-view="services">
-  <section class="page-head band-forest on-dark">
+  <section class="page-head band-forest on-dark" id="servicesHead">
     <div class="wrap">
       <p class="crumbs"><a href="#home">Home</a> / Services</p>
       <h1>Our services</h1>
@@ -591,7 +630,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
   </section>
   <section>
     <div class="wrap svc-list">
-      <div class="svc-row"><div class="svc-ico"><svg class="ico"><use href="#i-roller"/></svg></div><div><p class="eyebrow">Painting</p><h2>Interior &amp; exterior painting</h2><p>Walls, ceilings, trims, doors and facades, with the preparation that makes a finish last through coastal weather.</p></div><ul><li><svg class="ico"><use href="#i-check"/></svg>Crack filling and surface prep</li><li><svg class="ico"><use href="#i-check"/></svg>Interior walls and ceilings</li><li><svg class="ico"><use href="#i-check"/></svg>Exterior walls, fascias and gutters</li><li><svg class="ico"><use href="#i-check"/></svg>Wood and metal finishes</li></ul><a class="btn btn-accent" href="#quote" data-svc="Painting">Quote for this</a></div>
+      <div class="svc-row"><div class="svc-ico"><svg class="ico"><use href="#i-roller"/></svg></div><div><p class="eyebrow">Painting</p><h2>Interior &amp; exterior painting</h2><p>Walls, ceilings, trims, doors and facades, with the preparation that makes a finish last through coastal weather.</p></div><ul><li><svg class="ico"><use href="#i-check"/></svg>Crack filling and surface prep</li><li><svg class="ico"><use href="#i-check"/></svg>Interior walls and ceilings</li><li><svg class="ico"><use href="#i-check"/></svg>Exterior walls, fascias and gutters</li><li><svg class="ico"><use href="#i-check"/></svg>Wood and metal finishes</li></ul><a class="btn btn-accent" id="paintQuote" href="#quote" data-svc="Painting">Quote for this</a></div>
       <div class="svc-row"><div class="svc-ico"><svg class="ico"><use href="#i-drop"/></svg></div><div><p class="eyebrow">Waterproofing</p><h2>Roofs, walls &amp; wet areas</h2><p>Stop leaks and damp at the source, before they turn into bigger repairs.</p></div><ul><li><svg class="ico"><use href="#i-check"/></svg>Flat and pitched roofs</li><li><svg class="ico"><use href="#i-check"/></svg>Damp and rising-damp treatment</li><li><svg class="ico"><use href="#i-check"/></svg>Balconies and parapet walls</li><li><svg class="ico"><use href="#i-check"/></svg>Bathrooms and showers</li></ul><a class="btn btn-accent" href="#quote" data-svc="Waterproofing">Quote for this</a></div>
       <div class="svc-row"><div class="svc-ico"><svg class="ico"><use href="#i-brick"/></svg></div><div><p class="eyebrow">Building</p><h2>Building &amp; renovations</h2><p>Upgrades that change how your space works, from a kitchen refresh to an extension.</p></div><ul><li><svg class="ico"><use href="#i-check"/></svg>Kitchen and bathroom renovations</li><li><svg class="ico"><use href="#i-check"/></svg>Additions and alterations</li><li><svg class="ico"><use href="#i-check"/></svg>Plastering, tiling and ceilings</li><li><svg class="ico"><use href="#i-check"/></svg>Paving and boundary walls</li></ul><a class="btn btn-accent" href="#quote" data-svc="Building">Quote for this</a></div>
       <div class="svc-row"><div class="svc-ico"><svg class="ico"><use href="#i-wrench"/></svg></div><div><p class="eyebrow">Maintenance</p><h2>General maintenance &amp; repairs</h2><p>The list of small jobs you've been putting off, handled properly in one visit.</p></div><ul><li><svg class="ico"><use href="#i-check"/></svg>Doors, windows and handles</li><li><svg class="ico"><use href="#i-check"/></svg>Minor plumbing and fittings</li><li><svg class="ico"><use href="#i-check"/></svg>Rental turnovers</li><li><svg class="ico"><use href="#i-check"/></svg>Scheduled upkeep plans</li></ul><a class="btn btn-accent" href="#quote" data-svc="Maintenance">Quote for this</a></div>
@@ -627,7 +666,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 
 <!-- ================= ABOUT ================= -->
 <div class="view" data-view="about">
-  <section class="page-head band-forest on-dark">
+  <section class="page-head band-forest on-dark" id="aboutHead">
     <div class="wrap">
       <p class="crumbs"><a href="#home">Home</a> / About</p>
       <h1>About Fundi</h1>
@@ -644,7 +683,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
         <p>We're budget-oriented, but never at the cost of quality. Every project gets a personal experience, tailored to your space, your needs and your wallet.</p>
         <p class="placeholder">[Owner's story placeholder: who started Fundi, when, and why. Two or three sentences in their own words, plus years of experience.]</p>
         <p class="quote-line">"We are ready to make your home look and feel great."</p>
-        <div class="sign"><img src="logo-brush.png" alt="" width="44" height="41"><div><b>[Owner name]</b><small>Founder, Fundi Maintenance</small></div></div>
+        <div class="sign"><img src="logo-brush.png" alt="" width="44" height="41"><div><b>Ronald Combrinck</b><small>Founder, Fundi Maintenance</small></div></div>
       </div>
     </div>
   </section>
@@ -683,7 +722,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 
 <!-- ================= QUOTE ================= -->
 <div class="view" data-view="quote">
-  <section class="page-head band-forest on-dark">
+  <section class="page-head band-forest on-dark" id="quoteHead">
     <div class="wrap">
       <p class="crumbs"><a href="#home">Home</a> / Free quote</p>
       <h1>Get a free quote</h1>
@@ -738,7 +777,6 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 <footer class="site-foot">
   <div class="wrap">
     <div class="foot-grid">
-      <div><img src="logo-wordmark-white.png" alt="Fundi Maintenance" width="700" height="199"><p>Painting, waterproofing, building and maintenance for homes and businesses in George, Western Cape.</p></div>
       <div><h4>Contact</h4><ul><li><a href="tel:+27798278123">079 827 8123</a></li><li><a href="https://wa.me/27798278123" target="_blank" rel="noopener">WhatsApp</a></li><li style="overflow-wrap:anywhere">fundimaintenance@outlook.com</li></ul></div>
       <div><h4>Services</h4><ul><li><a href="#services">Painting</a></li><li><a href="#services">Waterproofing</a></li><li><a href="#services">Building &amp; renovations</a></li><li><a href="#services">Maintenance</a></li></ul></div>
       <div><h4>Explore</h4><ul><li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#quote">Free quote</a></li></ul></div>
