@@ -1,0 +1,596 @@
+<title>Fundi Journal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout: "Editorial Journal". A job-diary blog: slide-out menu, one narrow column of write-ups, each led by a before/after photo you can drag across. Sage paper, forest serif caps, tan labels. Deliberately one light look, matching the brand. */
+:root{
+  --sage-bg:#E3E8E5;      /* page: light wash of brand sage #8A9A94 */
+  --sage-paper:#EEF1EF;   /* post surface */
+  --sage-line:#C9D1CD;
+  --sage:#8A9A94;
+  --forest:#465D4F;
+  --forest-deep:#2F3F35;
+  --tan:#A98562;
+  --tan-soft:#E9DFD3;
+  --ink:#27312B;
+  --muted:#5B6862;
+  --white:#FFFFFF;
+  --serif:"Cormorant Garamond","EB Garamond",Garamond,"Times New Roman",serif;
+  --sans:"Jost","Futura","Century Gothic","Helvetica Neue",Arial,sans-serif;
+  --track-wide:.3em;
+  --col:760px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--sage-bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--sage-bg)}
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--tan);outline-offset:3px}
+.gutter{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.col{max-width:var(--col);margin:0 auto}
+
+/* type */
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--forest);text-transform:uppercase;letter-spacing:var(--track-wide);line-height:1.25;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4.6vw,44px)}
+h2{font-size:clamp(23px,3.4vw,32px)}
+h3{font-size:19px;letter-spacing:.2em}
+p{margin:0}
+.label{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--tan)}
+.meta{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:62ch}
+.ital{font-family:var(--serif);font-style:italic;font-size:clamp(21px,2.4vw,26px);line-height:1.45;color:var(--forest)}
+
+/* mock note */
+.mock-note{background:var(--forest);color:#E3E8E5;font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding-block:7px}
+
+/* header */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--sage-bg);border-bottom:1px solid var(--sage-line)}
+.head-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;min-height:76px;max-width:1180px;margin:0 auto}
+.icon-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:10px 4px;cursor:pointer;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:400}
+.icon-btn svg{width:22px;height:22px;stroke:var(--forest);fill:none;stroke-width:1.4}
+.head-row .right{justify-self:end}
+.brand img{height:44px;width:auto}
+@media (max-width:520px){.brand img{height:34px}.icon-btn .txt{display:none}}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(39,49,43,.38);z-index:50;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer{position:fixed;top:0;bottom:0;left:0;z-index:60;width:min(380px,88vw);background:var(--forest);color:#E8ECEA;
+  padding:calc(24px + env(safe-area-inset-top,0px)) 30px calc(24px + env(safe-area-inset-bottom,0px)) max(30px,env(safe-area-inset-left,0px));
+  transform:translateX(-102%);transition:transform .38s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;gap:30px;overflow-y:auto}
+body.menu-open .scrim{opacity:1;pointer-events:auto}
+body.menu-open .drawer{transform:none}
+.drawer-top{display:flex;justify-content:space-between;align-items:center}
+.drawer-top img{height:60px;width:auto;filter:brightness(0) invert(1);opacity:.92}
+.drawer .icon-btn svg{stroke:#E8ECEA}
+.search{display:flex;border-bottom:1px solid rgba(232,236,234,.4)}
+.search input{flex:1;min-width:0;background:none;border:0;color:#fff;font:inherit;font-size:16px;padding:10px 0}
+.search input::placeholder{color:rgba(232,236,234,.6)}
+.search button{background:none;border:0;cursor:pointer;padding:0 4px}
+.search svg{width:20px;height:20px;stroke:#E8ECEA;fill:none;stroke-width:1.5}
+.drawer nav{display:flex;flex-direction:column;gap:4px}
+.drawer nav a{font-family:var(--serif);font-size:24px;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;padding:8px 0;color:#F2F4F2}
+.drawer nav a[aria-current="page"]{color:var(--tan-soft)}
+.drawer nav a:hover{color:var(--tan-soft)}
+.drawer .sub{display:flex;flex-direction:column;gap:2px;padding-left:2px}
+.drawer .sub a{font-family:var(--sans);font-size:13px;letter-spacing:.2em;padding:5px 0;color:rgba(232,236,234,.78)}
+.drawer h4{margin:0 0 10px;font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--tan-soft)}
+.social{display:flex;gap:10px;flex-wrap:wrap}
+.social a{width:42px;height:42px;border:1px solid rgba(232,236,234,.4);border-radius:50%;display:grid;place-items:center;text-decoration:none}
+.social a:hover{background:rgba(255,255,255,.08)}
+.social svg{width:18px;height:18px;fill:#E8ECEA}
+.drawer .contact{font-size:14px;line-height:1.9;color:rgba(232,236,234,.85);margin-top:auto}
+
+/* views */
+.view{display:none}
+.view.active{display:block;animation:fade .45s ease both}
+@keyframes fade{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* masthead */
+.masthead{text-align:center;padding-block:clamp(44px,7vw,84px) clamp(28px,4vw,44px);display:grid;gap:16px;justify-items:center}
+.masthead .ital{max-width:38ch}
+.labels{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;padding-block:18px;border-block:1px solid var(--sage-line);margin-bottom:clamp(34px,5vw,56px)}
+.labels button{background:none;border:0;cursor:pointer;font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:6px 2px;color:var(--muted);border-bottom:1px solid transparent}
+.labels button[aria-pressed="true"]{color:var(--forest);border-bottom-color:var(--tan);font-weight:500}
+.status{text-align:center;margin:-20px 0 34px;font-size:14px;color:var(--muted)}
+.status button{background:none;border:0;border-bottom:1px solid var(--tan);cursor:pointer;color:var(--forest);padding:0;margin-left:8px;font-size:14px}
+
+/* post */
+.feed{display:grid;gap:clamp(56px,8vw,96px)}
+.post{display:grid;gap:22px}
+.post-head{display:grid;gap:12px;text-align:center;justify-items:center}
+.post-head .tagline{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center}
+.post-head .tagline .dot{width:4px;height:4px;border-radius:50%;background:var(--sage)}
+.tag{background:none;border:0;padding:0;cursor:pointer}
+.tag:hover{text-decoration:underline;text-underline-offset:4px}
+.post h2 a{text-decoration:none}
+.post h2 a:hover{color:var(--forest-deep)}
+
+/* before / after */
+.ba{position:relative;aspect-ratio:3/2;max-width:100%;overflow:hidden;background:var(--sage);user-select:none;-webkit-user-select:none;--pos:50%}
+.ba .pane{position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px}
+.ba .before{background:
+  repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 2px,transparent 2px 14px),
+  linear-gradient(160deg,#9AA39E,#7E8782)}
+.ba .after{clip-path:inset(0 0 0 var(--pos))}
+.ba.t-forest .after{background:radial-gradient(120% 90% at 70% 20%,#5C7565,#465D4F 60%,#3A4E42)}
+.ba.t-tan .after{background:radial-gradient(120% 90% at 70% 20%,#C2A282,#A98562 60%,#8F6F51)}
+.ba.t-sage .after{background:radial-gradient(120% 90% at 70% 20%,#B7C3BD,#97A7A0 60%,#7F918A)}
+.ba .after{justify-content:flex-end}
+.chip{background:rgba(39,49,43,.55);color:#fff;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:6px 10px;backdrop-filter:blur(2px)}
+.ph-note{position:absolute;left:50%;top:22%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,.9);font-size:13px;letter-spacing:.1em;max-width:80%;pointer-events:none;line-height:1.5}
+.ph-note b{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(17px,2.2vw,22px);letter-spacing:.24em;text-transform:uppercase;margin-bottom:4px}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:#fff;pointer-events:none}
+.ba .handle::after{content:"";position:absolute;top:50%;left:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.18);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23465D4F' stroke-width='1.6'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5'/%3E%3C/svg%3E");background-size:24px;background-position:center;background-repeat:no-repeat}
+.ba input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.ba:has(input:focus-visible) .handle::after{outline:2px solid var(--tan);outline-offset:3px}
+.ba-hint{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center}
+
+.excerpt{max-width:64ch;margin:0 auto;display:grid;gap:16px}
+.excerpt .more{display:grid;gap:16px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid var(--sage-line);max-width:64ch;margin:0 auto;width:100%}
+.facts div{padding:12px 8px;text-align:center;display:grid;gap:2px;min-width:0}
+.facts div+div{border-left:1px solid var(--sage-line)}
+.facts .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tan);font-weight:500}
+.facts .v{font-family:var(--serif);font-size:18px;color:var(--forest);line-height:1.3}
+@media (max-width:460px){.facts .v{font-size:16px}}
+.readlink{justify-self:center;background:none;border:0;cursor:pointer;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--forest);font-weight:500;padding:8px 0;border-bottom:1px solid var(--tan)}
+.post-end{display:flex;justify-content:center}
+.post-end::before{content:"";width:70px;height:1px;background:var(--sage)}
+
+/* pager */
+.pager{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:clamp(56px,8vw,88px);padding-block:22px;border-top:1px solid var(--sage-line)}
+.pager button{background:none;border:1px solid var(--forest);cursor:pointer;padding:12px 22px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--forest)}
+.pager button:hover{background:var(--forest);color:#fff}
+.pager button[hidden]{display:none}
+.pager .count{font-size:13px;color:var(--muted);letter-spacing:.1em}
+.pager .spacer{width:1px}
+
+/* generic page */
+.page-head{text-align:center;padding-block:clamp(44px,7vw,84px) clamp(30px,4vw,48px);display:grid;gap:16px;justify-items:center}
+.page-head .lede{text-align:center}
+.page-body{padding-bottom:clamp(64px,9vw,120px)}
+
+/* services */
+.svc-list{display:grid;gap:0;border-top:1px solid var(--sage-line)}
+.svc{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 32px;padding-block:32px;border-bottom:1px solid var(--sage-line)}
+.svc .label{padding-top:6px}
+.svc .body{display:grid;gap:12px;min-width:0}
+.svc ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.svc li{font-size:14px;padding:4px 12px;background:var(--sage-paper);border:1px solid var(--sage-line)}
+.svc .go{justify-self:start;background:none;border:0;padding:0;cursor:pointer;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);border-bottom:1px solid var(--tan)}
+@media (max-width:600px){.svc{grid-template-columns:1fr}}
+.steps{margin-top:clamp(48px,7vw,80px);display:grid;gap:22px}
+.steps ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.steps li{display:grid;gap:6px;align-content:start;min-width:0}
+.steps .n{font-family:var(--serif);font-size:38px;color:var(--tan);line-height:1}
+.steps li p{font-size:15px;color:var(--muted)}
+@media (max-width:700px){.steps ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:400px){.steps ol{grid-template-columns:1fr}}
+
+/* about */
+.portrait{aspect-ratio:4/5;max-width:100%;width:min(420px,100%);margin:0 auto;background:radial-gradient(120% 90% at 30% 20%,#5C7565,#465D4F 60%,#3A4E42);position:relative}
+.article{max-width:64ch;margin:clamp(36px,5vw,56px) auto 0;display:grid;gap:20px}
+.article .drop::first-letter{font-family:var(--serif);float:left;font-size:4.2em;line-height:.85;padding:6px 10px 0 0;color:var(--forest)}
+.article blockquote{margin:12px 0;padding:6px 0 6px 22px;border-left:2px solid var(--tan)}
+.values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:clamp(44px,6vw,72px);padding-top:32px;border-top:1px solid var(--sage-line)}
+.values div{display:grid;gap:8px;align-content:start;min-width:0}
+.values p{font-size:15px;color:var(--muted)}
+@media (max-width:680px){.values{grid-template-columns:1fr}}
+
+/* quote */
+.contact-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid var(--sage-line);margin-bottom:clamp(36px,5vw,56px)}
+.contact-row>div{padding:18px 12px;text-align:center;display:grid;gap:4px;justify-items:center;min-width:0}
+.contact-row>div+div{border-left:1px solid var(--sage-line)}
+.contact-row .v{font-family:var(--serif);font-size:20px;color:var(--forest);word-break:break-word;line-height:1.35}
+.copy{background:none;border:0;padding:0;cursor:pointer;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tan);font-weight:500}
+@media (max-width:640px){.contact-row{grid-template-columns:1fr}.contact-row>div+div{border-left:0;border-top:1px solid var(--sage-line)}}
+form{display:grid;gap:22px;background:var(--sage-paper);padding:clamp(22px,4vw,40px);border:1px solid var(--sage-line)}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+label.f{display:grid;gap:6px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:400;min-width:0}
+input,select,textarea{font:inherit;font-size:16px;letter-spacing:0;text-transform:none;color:var(--ink);background:var(--white);border:1px solid var(--sage-line);border-radius:0;padding:11px 12px;width:100%}
+textarea{min-height:130px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--forest)}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+legend{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{cursor:pointer}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips span{display:inline-block;padding:8px 14px;border:1px solid var(--sage-line);background:var(--white);font-size:14px}
+.chips input:checked+span{background:var(--forest);border-color:var(--forest);color:#fff}
+.chips input:focus-visible+span{outline:2px solid var(--tan);outline-offset:2px}
+.photo-note{font-size:14px;color:var(--muted)}
+.submit-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.btn{display:inline-block;background:var(--forest);color:#fff;border:1px solid var(--forest);padding:14px 26px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--forest-deep)}
+.btn.ghost{background:none;color:var(--forest)}
+.btn.ghost:hover{background:var(--forest);color:#fff}
+.form-note{font-size:13px;color:var(--muted)}
+.sent{background:var(--sage-paper);border:1px solid var(--sage-line);padding:clamp(26px,4vw,44px);display:grid;gap:12px;text-align:center;justify-items:center}
+
+/* footer */
+footer{background:var(--sage-paper);border-top:1px solid var(--sage-line);padding-block:clamp(48px,6vw,72px) 28px}
+.foot{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:36px;align-items:start}
+.foot img{width:170px}
+.foot h4{margin:0 0 10px;font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--tan)}
+.foot p,.foot a{font-size:15px;color:var(--muted);text-decoration:none;word-break:break-word}
+.foot .links{display:grid;gap:4px}
+.foot a:hover{color:var(--forest)}
+.legal{max-width:1000px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--sage-line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:720px){.foot{grid-template-columns:1fr 1fr}.foot>div:first-child{grid-column:1/-1}}
+@media (max-width:420px){.foot{grid-template-columns:1fr}}
+.cta-band{text-align:center;display:grid;gap:18px;justify-items:center;padding-block:clamp(56px,8vw,96px)}
+.cta-band img{width:96px}
+.cta-band .line{font-family:var(--serif);font-size:clamp(22px,3.4vw,34px);letter-spacing:.3em;text-transform:uppercase;color:var(--forest)}
+.cta-band .line span{color:var(--tan)}
+</style>
+
+<div class="mock-note gutter">Design mockup · grey-green panels mark where real before and after photos go · sample job write-ups</div>
+
+<header class="site-head gutter">
+  <div class="head-row">
+    <button class="icon-btn" id="openMenu" aria-expanded="false" aria-controls="drawer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg><span class="txt">Menu</span>
+    </button>
+    <a class="brand" href="#journal" aria-label="Fundi Maintenance, journal home"><img src="logo-wordmark.png" alt="Fundi Maintenance" width="700" height="199"></a>
+    <button class="icon-btn right" id="openSearch" aria-label="Search the journal">
+      <span class="txt">Search</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Menu" aria-hidden="true">
+  <div class="drawer-top">
+    <img src="logo-brush.png" alt="" width="300" height="281">
+    <button class="icon-btn" id="closeMenu" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+  <form class="search" id="searchForm" role="search" style="background:none;border:0;border-bottom:1px solid rgba(232,236,234,.4);padding:0">
+    <label for="q" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search job notes</label>
+    <input id="q" type="search" placeholder="Search job notes, e.g. roof" autocomplete="off" style="background:none;border:0;color:#fff;padding:10px 0">
+    <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg></button>
+  </form>
+  <nav aria-label="Main">
+    <a href="#journal">Journal</a>
+    <div class="sub">
+      <a href="#journal" data-label="Painting">Painting</a>
+      <a href="#journal" data-label="Building">Building</a>
+      <a href="#journal" data-label="Repairs">Repairs</a>
+      <a href="#journal" data-label="Waterproofing">Waterproofing</a>
+    </div>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#quote">Free Quote</a>
+  </nav>
+  <div>
+    <h4>Follow along</h4>
+    <div class="social">
+      <a href="https://wa.me/27798278123" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg></a>
+      <a href="#quote" aria-label="Email (see quote page)"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3V5zm2 2v.4l7 4.6 7-4.6V7H5zm14 2.8-7 4.6-7-4.6V17h14V9.8z"/></svg></a>
+      <a href="#journal" aria-label="Facebook (placeholder)"><svg viewBox="0 0 24 24"><path d="M14 8V6.5c0-.7.2-1.2 1.2-1.2H17V2.2A22 22 0 0 0 14.6 2C12.3 2 10.8 3.4 10.8 6v2H8v3.3h2.8V22H14V11.3h2.7l.4-3.3H14z"/></svg></a>
+      <a href="#journal" aria-label="Instagram (placeholder)"><svg viewBox="0 0 24 24"><path d="M12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 7.9a3.1 3.1 0 1 1 0-6.2 3.1 3.1 0 0 1 0 6.2zM17 5.8a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zM21.9 8c-.1-1.6-.4-3-1.6-4.2S17.6 2.2 16 2.1C14.4 2 9.6 2 8 2.1 6.4 2.2 5 2.5 3.8 3.7S2.2 6.4 2.1 8C2 9.6 2 14.4 2.1 16c.1 1.6.4 3 1.6 4.2s2.6 1.5 4.2 1.6c1.6.1 6.4.1 8 0 1.6-.1 3-.4 4.2-1.6s1.5-2.6 1.6-4.2c.1-1.6.1-6.4 0-8zm-2.1 9.9a3.3 3.3 0 0 1-1.8 1.8c-1.3.5-4.3.4-5.9.4s-4.6.1-5.9-.4a3.3 3.3 0 0 1-1.8-1.8c-.5-1.3-.4-4.3-.4-5.9s-.1-4.6.4-5.9A3.3 3.3 0 0 1 6.1 4.3c1.3-.5 4.3-.4 5.9-.4s4.6-.1 5.9.4a3.3 3.3 0 0 1 1.8 1.8c.5 1.3.4 4.3.4 5.9s.1 4.6-.4 5.9z"/></svg></a>
+    </div>
+  </div>
+  <div class="contact">Call or WhatsApp 079 827 8123<br>fundimaintenance@outlook.com<br>George &amp; surrounds, Western Cape</div>
+</aside>
+
+<main>
+<!-- ============ JOURNAL ============ -->
+<div class="view" id="v-journal" data-view="journal">
+  <div class="gutter">
+    <div class="col">
+      <div class="masthead">
+        <p class="label">The Fundi Journal · Painting + Building</p>
+        <h1>Notes from the job</h1>
+        <p class="ital">Before and after, one house at a time, around George and the Garden Route.</p>
+      </div>
+      <div class="labels" role="group" aria-label="Filter by category" id="labels">
+        <button type="button" data-l="All" aria-pressed="true">All work</button>
+        <button type="button" data-l="Painting" aria-pressed="false">Painting</button>
+        <button type="button" data-l="Building" aria-pressed="false">Building</button>
+        <button type="button" data-l="Repairs" aria-pressed="false">Repairs</button>
+        <button type="button" data-l="Waterproofing" aria-pressed="false">Waterproofing</button>
+      </div>
+      <p class="status" id="status" hidden></p>
+      <div class="feed" id="feed"></div>
+      <div class="pager" id="pager">
+        <button type="button" id="newer">Newer posts</button>
+        <span class="count" id="count"></span>
+        <button type="button" id="older">Older posts</button>
+      </div>
+    </div>
+  </div>
+  <div class="gutter" style="background:var(--sage-paper);border-top:1px solid var(--sage-line);margin-top:clamp(40px,6vw,72px)">
+    <div class="cta-band">
+      <img src="logo-brush.png" alt="" width="300" height="281">
+      <p class="line">Dream it <span>·</span> Renovate <span>·</span> Love it</p>
+      <p class="lede" style="text-align:center">Want your place in the next write-up? Quotes are free, and we'll come and look at the job.</p>
+      <a class="btn" href="#quote">Get a free quote</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<div class="view" id="v-services" data-view="services">
+  <div class="gutter page-body">
+    <div class="col">
+      <div class="page-head">
+        <p class="label">Services</p>
+        <h1>What we do</h1>
+        <p class="lede">Painting, building and maintenance for private homes and commercial properties in George and surrounds. Quality workmanship, competitive pricing and flexible scheduling.</p>
+      </div>
+      <div class="svc-list">
+        <div class="svc"><span class="label">Painting</span><div class="body"><h3>Interior &amp; exterior painting</h3><p>Walls, ceilings, trims, doors and facades, with the preparation that makes a finish last through coastal weather.</p><ul><li>Crack filling and prep</li><li>Walls and ceilings</li><li>Fascias and gutters</li><li>Wood and metal</li></ul><button class="go" data-goto="Painting">Read painting jobs</button></div></div>
+        <div class="svc"><span class="label">Waterproofing</span><div class="body"><h3>Roofs, walls &amp; wet areas</h3><p>Stop leaks and damp at the source, before they turn into bigger repairs.</p><ul><li>Flat and pitched roofs</li><li>Rising damp</li><li>Balconies and parapets</li><li>Showers and bathrooms</li></ul><button class="go" data-goto="Waterproofing">Read waterproofing jobs</button></div></div>
+        <div class="svc"><span class="label">Building</span><div class="body"><h3>Building &amp; renovations</h3><p>Upgrades that change how your space works, from a kitchen refresh to an extension.</p><ul><li>Kitchens and bathrooms</li><li>Additions and alterations</li><li>Plaster, tiles and ceilings</li><li>Paving and boundary walls</li></ul><button class="go" data-goto="Building">Read building jobs</button></div></div>
+        <div class="svc"><span class="label">Repairs</span><div class="body"><h3>General maintenance &amp; repairs</h3><p>The list of small jobs you've been putting off, handled properly in one visit.</p><ul><li>Doors, windows and handles</li><li>Minor plumbing</li><li>Rental turnovers</li><li>Scheduled upkeep</li></ul><button class="go" data-goto="Repairs">Read repair jobs</button></div></div>
+        <div class="svc"><span class="label">Commercial</span><div class="body"><h3>Commercial &amp; private properties</h3><p>Offices, shops, complexes and rentals, with work planned around tenants and trading hours.</p><ul><li>Body corporates</li><li>Offices and retail</li><li>Landlords and agents</li></ul></div></div>
+      </div>
+      <div class="steps">
+        <h2 style="text-align:center">From first call to final coat</h2>
+        <ol>
+          <li><span class="n">1</span><h3>Get in touch</h3><p>Call, WhatsApp or send the quote form with a few photos.</p></li>
+          <li><span class="n">2</span><h3>Site visit</h3><p>We look at the job, talk through options and measure up.</p></li>
+          <li><span class="n">3</span><h3>Free quote</h3><p>A clear, itemised quote built around your budget.</p></li>
+          <li><span class="n">4</span><h3>The work</h3><p>Done on schedule, cleaned up after, and checked with you at the end.</p></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<div class="view" id="v-about" data-view="about">
+  <div class="gutter page-body">
+    <div class="col">
+      <div class="page-head">
+        <p class="label">About Fundi Maintenance</p>
+        <h1>A trusted hand for your home</h1>
+      </div>
+      <div class="portrait"><div class="ph-note"><b>Portrait</b>owner on site, natural light</div></div>
+      <div class="article">
+        <p class="drop">Need a hand with your home maintenance? Whether you need to paint or make general repairs, Fundi Maintenance is a trusted and reliable home maintenance service based in George, Western Cape. We serve customers in George and the surrounding areas, painting, building and maintaining commercial and private buildings.</p>
+        <p>We're budget-oriented, but never at the cost of quality. Every project gets a personal experience, tailored to your space, your needs and your wallet. No cookie-cutter solutions, just work that fits you.</p>
+        <blockquote class="ital">You know that feeling when your house looks fine, but doesn't really feel like you anymore? That's your sign.</blockquote>
+        <p>Most people wait for something to break before they renovate. We believe the real magic is renovating to upgrade your lifestyle, not just to fix problems. Your space should work for the way you live and work, and make you smile when you walk through the door.</p>
+        <p>[Owner's story placeholder: who started Fundi, when, and why. Two or three sentences in their own words.]</p>
+        <p class="meta">[Owner name], Founder</p>
+      </div>
+      <div class="values">
+        <div><h3>Quality work</h3><p>Proper preparation, good materials and a tidy finish, whether it's one wall or a whole building.</p></div>
+        <div><h3>Fair pricing</h3><p>A clear quote up front, built around your budget. We'll tell you where to spend and where to save.</p></div>
+        <div><h3>Flexible hours</h3><p>We plan the work around your home or business so daily life keeps running.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ QUOTE ============ -->
+<div class="view" id="v-quote" data-view="quote">
+  <div class="gutter page-body">
+    <div class="col">
+      <div class="page-head">
+        <p class="label">Free quote</p>
+        <h1>Tell us about the job</h1>
+        <p class="lede">Ready to transform your space or start that big build? Send a few details and we'll get back to you to arrange a site visit.</p>
+      </div>
+      <div class="contact-row">
+        <div><span class="label">Call or WhatsApp</span><span class="v" id="c-phone">079 827 8123</span><button class="copy" data-copy="c-phone">Copy number</button></div>
+        <div><span class="label">Email</span><span class="v" id="c-email">fundimaintenance@outlook.com</span><button class="copy" data-copy="c-email">Copy email</button></div>
+        <div><span class="label">Area</span><span class="v">George &amp; surrounds</span><span class="meta">[Hours to confirm]</span></div>
+      </div>
+      <div id="formWrap">
+        <form id="quoteForm" novalidate>
+          <div class="row2">
+            <label class="f" for="q-name">Name<input id="q-name" name="name" autocomplete="name" placeholder="Your name"></label>
+            <label class="f" for="q-phone">Phone<input id="q-phone" name="phone" type="tel" autocomplete="tel" placeholder="082 000 0000"></label>
+          </div>
+          <div class="row2">
+            <label class="f" for="q-email">Email<input id="q-email" name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+            <label class="f" for="q-area">Suburb or town<input id="q-area" name="area" placeholder="e.g. Heatherlands, Wilderness"></label>
+          </div>
+          <fieldset>
+            <legend>What do you need?</legend>
+            <div class="chips">
+              <label for="s-paint"><input type="checkbox" id="s-paint" checked><span>Painting</span></label>
+              <label for="s-wp"><input type="checkbox" id="s-wp"><span>Waterproofing</span></label>
+              <label for="s-build"><input type="checkbox" id="s-build"><span>Building &amp; renovations</span></label>
+              <label for="s-rep"><input type="checkbox" id="s-rep"><span>Repairs</span></label>
+            </div>
+          </fieldset>
+          <div class="row2">
+            <label class="f" for="q-type">Property<select id="q-type"><option>Home</option><option>Rental</option><option>Business / commercial</option><option>Complex / body corporate</option></select></label>
+            <label class="f" for="q-when">When<select id="q-when"><option>As soon as possible</option><option>Within a month</option><option>In 1 to 3 months</option><option>Just planning</option></select></label>
+          </div>
+          <label class="f" for="q-msg">About the job<textarea id="q-msg" placeholder="e.g. Repaint the outside of a three-bedroom house, some cracks in the front wall."></textarea></label>
+          <label class="f" for="q-photos">Photos of the job (optional)<input id="q-photos" type="file" accept="image/*" multiple></label>
+          <div class="submit-row"><button class="btn" type="submit">Request my free quote</button><span class="form-note">Mockup only: this form doesn't send anything.</span></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="gutter">
+  <div class="foot">
+    <div><img src="logo-full.png" alt="Fundi Maintenance, Painting + Building" width="900" height="765"></div>
+    <div><h4>Contact</h4><div class="links"><a href="https://wa.me/27798278123" target="_blank" rel="noopener">079 827 8123</a><p>fundimaintenance@outlook.com</p><p>George, Western Cape</p></div></div>
+    <div><h4>Explore</h4><div class="links"><a href="#journal">Journal</a><a href="#services">Services</a><a href="#about">About</a><a href="#quote">Free Quote</a></div></div>
+  </div>
+  <div class="legal"><span>© 2026 Fundi Maintenance</span><span>Dream it. Renovate. Love it.</span></div>
+</footer>
+
+<script>
+(function(){
+  // Sample job write-ups (placeholder content for the mockup)
+  var POSTS=[
+    {l:'Painting',t:'Two coats lighter in Heatherlands',d:'2 November 2026',where:'Heatherlands, George',tone:'t-sage',
+     b:'Faded, chalky facade',a:'Fresh exterior in soft white',
+     ex:'The owners called about "a bit of peeling by the garage". Up close, the whole north wall was chalking, and hairline cracks ran under every window.',
+     more:['We scraped and washed the walls, filled the cracks with flexible filler and primed the bare patches before two coats of exterior acrylic. Fascias and gutters got a satin enamel to match.','The house sat in the same colour family, one shade lighter, which made the garden look greener too.'],
+     facts:[['Time','6 days'],['Scope','Full exterior'],['Type','Home']]},
+    {l:'Waterproofing',t:'A flat roof ready for winter rain',d:'21 October 2026',where:'George Industria',tone:'t-forest',
+     b:'Ponding water, cracked seams',a:'Sealed and reflective',
+     ex:'A small warehouse roof had been patched so often that nobody knew which leak was which. We stripped the old repairs and started again.',
+     more:['New torch-on membrane went down over a primed screed, with extra layers at the parapet joints where water sat longest. A reflective silver coat on top keeps the space below cooler in summer.','The first big storm came a week later. Dry inside.'],
+     facts:[['Time','4 days'],['Scope','180 m² roof'],['Type','Commercial']]},
+    {l:'Building',t:'One wall out, a lot more light in',d:'30 September 2026',where:'Blanco',tone:'t-tan',
+     b:'Closed-off galley kitchen',a:'Open kitchen and dining',
+     ex:'The brief was simple: "I want to see the mountains while I cook." That meant taking out the wall between kitchen and dining room.',
+     more:['After an engineer checked the span, we put in a lintel, removed the wall, made good the floor and ceiling, then plastered and painted. New tiles run through both rooms so they read as one space.','Dream it. Renovate. Love it. This one is the motto in a single photo.'],
+     facts:[['Time','3 weeks'],['Scope','Kitchen + dining'],['Type','Home']]},
+    {l:'Repairs',t:'Eleven small jobs, one visit',d:'12 September 2026',where:'Wilderness',tone:'t-sage',
+     b:'Sticking doors, dripping tap',a:'Everything working again',
+     ex:'A holiday home with a list on the fridge: doors that stuck, a dripping outside tap, a loose gate latch, two cracked tiles and a ceiling stain.',
+     more:['We planned the list in the order that made sense, brought the parts with us and finished it in a single long day, including touching up the paint where the stain had been.','The owners now book a check-up before every summer season.'],
+     facts:[['Time','1 day'],['Scope','11 items'],['Type','Holiday home']]},
+    {l:'Painting',t:'An office repaint over two weekends',d:'24 August 2026',where:'George CBD',tone:'t-forest',
+     b:'Scuffed walls, dated colour',a:'Calm, clean workspace',
+     ex:'A practice of twelve people couldn\'t close for a week. So we worked Saturday and Sunday, twice, and left it ready for Monday each time.',
+     more:['Furniture was moved and covered, walls washed and repaired, then painted in a washable low-sheen finish. Doors and skirtings were done in the second weekend.','Nobody missed a day of appointments.'],
+     facts:[['Time','2 weekends'],['Scope','6 rooms'],['Type','Commercial']]},
+    {l:'Building',t:'A bathroom that finally stays dry',d:'29 July 2026',where:'Denneoord',tone:'t-tan',
+     b:'Leaking shower, lifted tiles',a:'Waterproofed walk-in shower',
+     ex:'The shower had leaked into the passage wall for years. Fixing the tiles alone wouldn\'t have lasted, so we went down to the screed.',
+     more:['We stripped the shower, laid a waterproofing membrane up the walls and over the floor, set a new fall to the drain and tiled over it. New fittings and a frameless screen finished it.'],
+     facts:[['Time','8 days'],['Scope','Main bathroom'],['Type','Home']]},
+    {l:'Repairs',t:'A rental turned around in a week',d:'18 June 2026',where:'Pacaltsdorp',tone:'t-forest',
+     b:'Marked walls, broken fittings',a:'Ready for new tenants',
+     ex:'The agent needed the flat ready for new tenants by the 1st. We had seven days between move-out and move-in.',
+     more:['Holes filled, walls repainted, a kitchen cupboard door rehung, new handles, a toilet cistern repaired and the garden wall patched. Photos went to the agent at the end of each day.'],
+     facts:[['Time','5 days'],['Scope','2-bed flat'],['Type','Rental']]},
+    {l:'Waterproofing',t:'Damp out of a garden cottage',d:'27 May 2026',where:'Hoekwil',tone:'t-sage',
+     b:'Bubbling paint at skirting level',a:'Dry walls, clean finish',
+     ex:'Rising damp had pushed the paint off the bottom metre of every wall in a little cottage under the trees.',
+     more:['We cut back the damaged plaster, injected a damp-proof course, replastered with a breathable mix and let it cure properly before painting. Gutters were cleared and a downpipe redirected away from the wall.'],
+     facts:[['Time','2 weeks'],['Scope','Cottage walls'],['Type','Home']]}
+  ];
+  var PER=4, state={label:'All',page:0,q:''};
+  var feed=document.getElementById('feed');
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  function postHTML(p,i){
+    var id='post-'+i;
+    return '<article class="post" id="'+id+'">'+
+      '<header class="post-head">'+
+        '<div class="tagline"><button class="tag label" data-tag="'+p.l+'">'+p.l+'</button><span class="dot"></span><span class="meta">'+p.d+'</span></div>'+
+        '<h2>'+esc(p.t)+'</h2>'+
+        '<span class="meta">'+esc(p.where)+'</span>'+
+      '</header>'+
+      '<div class="ba '+p.tone+'">'+
+        '<div class="pane before"><span class="chip">Before</span></div>'+
+        '<div class="pane after"><span class="chip">After</span></div>'+
+        '<div class="ph-note"><b>Before / After</b>'+esc(p.b)+' → '+esc(p.a)+'</div>'+
+        '<div class="handle"></div>'+
+        '<input type="range" min="0" max="100" value="50" id="ba-'+i+'" aria-label="Compare before and after: '+esc(p.t)+'">'+
+      '</div>'+
+      '<p class="ba-hint">Drag to compare</p>'+
+      '<div class="excerpt"><p>'+esc(p.ex)+'</p><div class="more" hidden>'+p.more.map(function(m){return '<p>'+esc(m)+'</p>'}).join('')+'</div></div>'+
+      '<div class="facts">'+p.facts.map(function(f){return '<div><span class="k">'+f[0]+'</span><span class="v">'+esc(f[1])+'</span></div>'}).join('')+'</div>'+
+      '<button class="readlink" aria-expanded="false">Read the full job</button>'+
+      '<div class="post-end"></div>'+
+    '</article>';
+  }
+
+  function render(scroll){
+    var list=POSTS.map(function(p,i){return{p:p,i:i}}).filter(function(o){
+      if(state.label!=='All'&&o.p.l!==state.label)return false;
+      if(state.q){var hay=(o.p.t+' '+o.p.l+' '+o.p.where+' '+o.p.ex+' '+o.p.more.join(' ')+' '+o.p.b+' '+o.p.a).toLowerCase();return hay.indexOf(state.q.toLowerCase())>=0;}
+      return true;
+    });
+    var pages=Math.max(1,Math.ceil(list.length/PER));
+    if(state.page>=pages)state.page=pages-1;
+    var slice=list.slice(state.page*PER,state.page*PER+PER);
+    feed.innerHTML=slice.length?slice.map(function(o){return postHTML(o.p,o.i)}).join(''):'<p class="lede" style="text-align:center;margin:0 auto">No job notes match that yet. Try another word, like roof, kitchen or damp.</p>';
+    document.getElementById('newer').hidden=state.page===0;
+    document.getElementById('older').hidden=state.page>=pages-1;
+    document.getElementById('count').textContent='Page '+(state.page+1)+' of '+pages;
+    document.querySelectorAll('#labels button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===state.label?'true':'false')});
+    var st=document.getElementById('status');
+    if(state.q||state.label!=='All'){
+      st.hidden=false;
+      st.innerHTML=(state.q?'Results for “'+esc(state.q)+'”':'Showing '+esc(state.label)+' jobs')+' · '+list.length+(list.length===1?' post':' posts')+'<button type="button" id="clearF">Show all</button>';
+      document.getElementById('clearF').onclick=function(){state={label:'All',page:0,q:''};document.getElementById('q').value='';render(true)};
+    } else st.hidden=true;
+    wire();
+    if(scroll){var m=document.getElementById('labels');window.scrollTo({top:Math.max(0,m.getBoundingClientRect().top+window.scrollY-110)})}
+  }
+
+  function wire(){
+    feed.querySelectorAll('.ba').forEach(function(ba){
+      var r=ba.querySelector('input');
+      r.addEventListener('input',function(){ba.style.setProperty('--pos',r.value+'%')});
+    });
+    feed.querySelectorAll('.readlink').forEach(function(b){
+      b.addEventListener('click',function(){
+        var more=b.parentNode.querySelector('.more');var open=more.hidden;more.hidden=!open;
+        b.setAttribute('aria-expanded',open?'true':'false');b.textContent=open?'Show less':'Read the full job';
+      });
+    });
+    feed.querySelectorAll('.tag').forEach(function(b){b.addEventListener('click',function(){setLabel(b.dataset.tag)})});
+  }
+  function setLabel(l){state.label=l;state.page=0;state.q='';document.getElementById('q').value='';if(location.hash!=='#journal'&&location.hash!==''){location.hash='journal'}render(true)}
+
+  document.querySelectorAll('#labels button').forEach(function(b){b.addEventListener('click',function(){setLabel(b.dataset.l)})});
+  document.getElementById('older').addEventListener('click',function(){state.page++;render(true)});
+  document.getElementById('newer').addEventListener('click',function(){state.page--;render(true)});
+  document.querySelectorAll('.go').forEach(function(b){b.addEventListener('click',function(){location.hash='journal';setLabel(b.dataset.goto)})});
+
+  // drawer
+  var body=document.body,drawer=document.getElementById('drawer'),openBtn=document.getElementById('openMenu');
+  function openMenu(focusSearch){body.classList.add('menu-open');drawer.setAttribute('aria-hidden','false');openBtn.setAttribute('aria-expanded','true');
+    setTimeout(function(){(focusSearch?document.getElementById('q'):document.getElementById('closeMenu')).focus()},60)}
+  function closeMenu(){body.classList.remove('menu-open');drawer.setAttribute('aria-hidden','true');openBtn.setAttribute('aria-expanded','false')}
+  openBtn.addEventListener('click',function(){openMenu(false)});
+  document.getElementById('openSearch').addEventListener('click',function(){openMenu(true)});
+  document.getElementById('closeMenu').addEventListener('click',closeMenu);
+  document.getElementById('scrim').addEventListener('click',closeMenu);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+  drawer.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',function(){
+    closeMenu();if(a.dataset.label){setTimeout(function(){setLabel(a.dataset.label)},0)}
+    else if(a.getAttribute('href')==='#journal'){state={label:'All',page:0,q:''};document.getElementById('q').value='';render(false)}
+  })});
+  document.getElementById('searchForm').addEventListener('submit',function(e){
+    e.preventDefault();state.q=document.getElementById('q').value.trim();state.label='All';state.page=0;closeMenu();
+    if(location.hash!=='#journal'&&location.hash!=='')location.hash='journal';render(true);
+  });
+
+  // routing
+  var views=['journal','services','about','quote'];
+  function show(){
+    var h=(location.hash||'').replace('#','');if(views.indexOf(h)<0)h='journal';
+    document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.dataset.view===h)});
+    drawer.querySelectorAll('nav > a').forEach(function(a){if(a.getAttribute('href')==='#'+h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',show);show();render(false);
+
+  // copy buttons
+  document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy),txt=el.textContent,orig=b.textContent;
+    function done(){b.textContent='Copied';setTimeout(function(){b.textContent=orig},1600)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected, press copy'}
+    try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+  })});
+
+  // quote form (non-sending)
+  document.getElementById('quoteForm').addEventListener('submit',function(e){
+    e.preventDefault();var n=document.getElementById('q-name');
+    if(!n.value.trim()){n.focus();n.style.borderColor='var(--tan)';n.placeholder='Please add your name';return}
+    var d=document.createElement('div');d.className='sent';
+    d.innerHTML='<p class="label">Preview</p><h2>Thanks, '+esc(n.value.trim())+'</h2><p class="lede" style="text-align:center">On the live site this would go to fundimaintenance@outlook.com, and Fundi would reply to arrange a site visit. In this mockup nothing was sent.</p>';
+    document.getElementById('formWrap').replaceChildren(d);
+  });
+})();
+</script>
