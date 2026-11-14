@@ -183,6 +183,7 @@ input.err{border-color:var(--accent-dark)}
 /* Why us split */
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:center}
 .split .ph{aspect-ratio:4/3.3}
+.split .photo{width:100%;aspect-ratio:4/3.3;object-fit:cover;object-position:center 40%;border-radius:var(--radius)}
 .split h2{font-size:clamp(1.9rem,3.6vw,2.6rem);margin:12px 0 18px}
 .split p+p{margin-top:14px}
 .split .copy p{color:var(--muted)}
@@ -443,7 +444,7 @@ a.contact-card:hover{border-color:var(--forest)}
 
   <section class="band-paper">
     <div class="wrap split">
-      <div class="ph"><span>Photo · a finished George home, freshly painted</span></div>
+      <img class="photo" src="george-home.jpg" alt="Two-storey home with a freshly painted cream exterior, a covered patio and a lawn under a blue sky" width="960" height="960" loading="lazy">
       <div class="copy">
         <p class="eyebrow">Why George property owners choose us</p>
         <h2 class="caps">Budget-minded, never at the cost of quality</h2>
