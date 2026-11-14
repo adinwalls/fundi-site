@@ -412,6 +412,8 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 #ctaDream *{color:#2d2926}
 footer.site-foot{background:#f8f7f3}
 footer.site-foot, footer.site-foot *{color:#5c6139}
+.foot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:820px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:auto}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -751,7 +753,6 @@ footer.site-foot, footer.site-foot *{color:#5c6139}
 <footer class="site-foot">
   <div class="wrap">
     <div class="foot-grid">
-      <div></div>
       <div><h4>Contact</h4><ul><li><a href="tel:+27798278123">079 827 8123</a></li><li><a href="https://wa.me/27798278123" target="_blank" rel="noopener">WhatsApp</a></li><li style="overflow-wrap:anywhere">fundimaintenance@outlook.com</li></ul></div>
       <div><h4>Services</h4><ul><li><a href="#services">Painting</a></li><li><a href="#services">Waterproofing</a></li><li><a href="#services">Building &amp; renovations</a></li><li><a href="#services">Maintenance</a></li></ul></div>
       <div><h4>Explore</h4><ul><li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#quote">Free quote</a></li></ul></div>
