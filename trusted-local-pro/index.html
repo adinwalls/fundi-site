@@ -392,6 +392,21 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
 #quickWrap h2{font-size:1.4rem;border-top:1px solid #2d2926;padding-top:20px}
 #whyQuote{border-left-color:#d6c284}
 #qq-svc{-webkit-appearance:none;appearance:none;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232d2926' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:12px 8px}
+#quickWrap{padding:18px 28px 13px;align-self:stretch}
+.split{align-items:stretch}
+.split .copy{display:flex;flex-direction:column}
+.split .copy .btn-row{margin-top:auto !important}
+#quickWrap form{gap:6px}
+#quickWrap input,#quickWrap select{padding-top:10px;padding-bottom:10px}
+#quickWrap label{margin-bottom:4px}
+#quickWrap p.sub{margin:4px 0 12px}
+#quickWrap form{gap:8px}
+#quickWrap form button{margin-top:20px}
+#stepsBand{background:#dee3e6}
+#stepsBand *{color:#2d2926}
+#stepsBand .eyebrow{color:#b49d62 !important}
+#stepsBand .steps li::before{color:#7ca5be;border-color:#7ca5be}
+#stepsBand .steps li:not(:last-child)::after{border-top-color:#b49d62}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -487,8 +502,8 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
   </section>
 
   <section class="band-paper">
-    <div class="wrap split" style="align-items:start">
-      <div class="quick" id="quickWrap" style="align-self:start">
+    <div class="wrap split">
+      <div class="quick" id="quickWrap">
         <h2 class="caps">Quick quote</h2>
         <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
         <form id="quickForm" novalidate>
@@ -512,7 +527,7 @@ h1,h2,h3,.quick h2,.svc.alt h3,.quote-line,.rating b,.sign b,.contact-card b{col
     </div>
   </section>
 
-  <section class="band-forest on-dark">
+  <section class="band-forest on-dark" id="stepsBand">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow" style="color:var(--accent-soft)">How it works</p>
