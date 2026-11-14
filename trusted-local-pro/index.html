@@ -64,12 +64,12 @@ p{margin:0}
 .btn-row{display:flex;flex-wrap:wrap;gap:12px}
 
 /* Top strip + header */
-.strip{background:var(--forest-deep);color:var(--on-forest-muted);font-size:.84rem}
+.strip{background:#f8f7f3;color:#000;font-size:.84rem}
 .strip .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:7px}
 .strip ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
 .strip li{display:flex;align-items:center;gap:7px}
-.strip .ico{width:16px;height:16px;color:var(--accent)}
-.strip .mock{color:var(--sage);font-style:italic}
+.strip .ico{width:16px;height:16px;color:#000}
+.strip .mock{color:#000;font-style:italic}
 @media (max-width:760px){.strip .mock,.strip li:nth-child(n+2){display:none}}
 .site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--white);border-bottom:1px solid var(--rule);transition:box-shadow .2s}
 .site-head.scrolled{box-shadow:0 6px 22px rgba(38,52,44,.08)}
@@ -161,18 +161,18 @@ input.err{border-color:var(--accent-dark)}
 
 /* Service tiles */
 .svc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.svc{display:flex;flex-direction:column;gap:12px;padding:30px 26px;background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);text-decoration:none;transition:border-color .2s,transform .2s,box-shadow .2s}
-.svc:hover{border-color:var(--forest);transform:translateY(-3px);box-shadow:0 12px 30px rgba(38,52,44,.08)}
+.svc{display:flex;flex-direction:column;gap:12px;padding:30px 26px;background:#f8f7f3;border:0;border-radius:var(--radius);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.svc:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(38,52,44,.08)}
 .svc-ico{width:58px;height:58px;border-radius:50%;background:var(--paper);display:grid;place-items:center;color:var(--forest)}
 .svc-ico .ico{width:30px;height:30px;stroke-width:1.4}
 .svc h3{font-size:1.5rem}
 .svc p{color:var(--muted);font-size:.97rem}
 .svc .more{margin-top:auto;font-size:.8rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-dark)}
-.svc.alt{background:var(--forest);border-color:var(--forest);color:var(--on-forest)}
-.svc.alt h3{color:var(--white)}
-.svc.alt p{color:var(--on-forest-muted)}
-.svc.alt .svc-ico{background:rgba(255,255,255,.1);color:var(--white)}
-.svc.alt .more{color:var(--accent-soft)}
+.svc.alt{background:#eeece2;border-color:#eeece2;color:var(--ink)}
+.svc.alt h3{color:var(--forest)}
+.svc.alt p{color:var(--muted)}
+.svc.alt .svc-ico{background:var(--white);color:var(--forest)}
+.svc.alt .more{color:var(--accent-dark)}
 @media (max-width:900px){.svc-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.svc-grid{grid-template-columns:1fr}}
 
@@ -223,10 +223,10 @@ input.err{border-color:var(--accent-dark)}
 
 /* CTA band */
 .cta-band{background:var(--forest-deep);color:var(--on-forest);text-align:center;position:relative;overflow:hidden}
-.cta-band .wrap{display:grid;justify-items:center;gap:18px}
+.cta-band .wrap{display:grid;justify-items:center;gap:12px}
 .cta-band .tagline{font-family:var(--serif);font-weight:600;text-transform:uppercase;letter-spacing:var(--track-wide);font-size:clamp(1.3rem,3vw,2rem);color:var(--white)}
 .cta-band .tagline i{font-style:normal;color:var(--accent-soft);padding:0 .3em}
-.big-phone{font-family:var(--serif);font-weight:700;font-size:clamp(2.4rem,7vw,4.2rem);color:var(--white);letter-spacing:.04em;line-height:1;text-decoration:none;font-variant-numeric:tabular-nums;user-select:all}
+.big-phone{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,4.2vw,2.3rem);color:var(--white);letter-spacing:.04em;line-height:1;text-decoration:none;margin-bottom:30px;font-variant-numeric:tabular-nums;user-select:all}
 .cta-band p{color:var(--on-forest-muted);max-width:52ch}
 
 /* Page heads */
@@ -357,7 +357,6 @@ a.contact-card:hover{border-color:var(--forest)}
     <ul>
       <li><svg class="ico"><use href="#i-check"/></svg>Free quotes &amp; site visits</li>
       <li><svg class="ico"><use href="#i-pin"/></svg>Based in George, Western Cape</li>
-      <li><svg class="ico"><use href="#i-clock"/></svg>[Mon to Fri, 7:30 to 17:00]</li>
     </ul>
     <span class="mock">Design mockup · striped panels mark where photos go</span>
   </div>
@@ -388,7 +387,7 @@ a.contact-card:hover{border-color:var(--forest)}
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow">Painting + Building · George &amp; surrounds</p>
-        <h1>Your trusted local Handy Man<span>Painting · Waterproofing · Renovations</span></h1>
+        <h1>Your trusted local Handy Men<span>Painting · Waterproofing · Renovations</span></h1>
         <p class="lede">From a leaking roof to a full repaint or a new extension, Fundi Maintenance does the job properly, on budget and on time, for homes and businesses across George.</p>
         <div class="btn-row">
           <a class="btn btn-accent" href="mailto:fundimaintenance@outlook.com?subject=Free%20Quote">Get my free quote <svg class="ico"><use href="#i-arrow"/></svg></a>
