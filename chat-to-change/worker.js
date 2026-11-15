@@ -75,7 +75,16 @@ export default {
     }
     if (isPage) return page();
     const viewer = login.email;
-    const admin = CLIENT.admins.includes(viewer.toLowerCase());
+    const listed = (list) => (list || []).some((e) => String(e).toLowerCase() === viewer.toLowerCase());
+    const admin = listed(CLIENT.admins);
+    // One Access login can cover every WebBrew site, so each site only lets in its own people.
+    if (!admin && !listed(CLIENT.clients)) {
+      console.log(`login refused: ${viewer} is not in client.json admins or clients`);
+      if (isPage || (request.headers.get("Accept") || "").includes("text/html")) {
+        return htmlPage("Not allowed", `<p>${esc(viewer)} can't make changes to this website. If that's a mistake, please contact WebBrew.</p>`, 403);
+      }
+      return json({ error: "This email can't make changes to this website." }, 403);
+    }
 
     try {
       const route = `${request.method} ${path}`;
@@ -811,9 +820,8 @@ async function reviewAction(request, env, viewer) {
     if (back) return back("rejected");
     return htmlPage("Rejected", `<p><b>${esc(pr.title)}</b> won't be published.</p>${approvalsLink()}`);
   }
-  const res = await fetch(`https://api.github.com${repo}/pulls/${n}/merge`, {
+  const res = await githubFetch(env, `${repo}/pulls/${n}/merge`, {
     method: "PUT",
-    headers: githubHeaders(env, true),
     body: JSON.stringify({ merge_method: "squash", commit_title: `${pr.title} (#${n})`, commit_message: `Approved by ${viewer}.` }),
   });
   if (!res.ok) {
@@ -1094,7 +1102,9 @@ async function accessLogin(request, env) {
   if (!ok) return no("bad signature");
   if (claims.exp * 1000 < Date.now()) return no("expired");
   if (claims.iss !== `https://${env.ACCESS_TEAM_DOMAIN}`) return no(`issuer ${claims.iss}`);
-  if (env.ACCESS_AUD && ![].concat(claims.aud).includes(env.ACCESS_AUD)) return no("wrong AUD tag");
+  // ACCESS_AUD can list more than one tag (comma-separated), e.g. while a site moves to the shared WebBrew login.
+  const auds = String(env.ACCESS_AUD || "").split(/[\s,]+/).filter(Boolean);
+  if (auds.length && ![].concat(claims.aud).some((a) => auds.includes(a))) return no("wrong AUD tag");
   if (!claims.email) return no("no email in token");
   return { email: claims.email, exp: claims.exp };
 }
@@ -1107,8 +1117,16 @@ function b64text(s) {
   return new TextDecoder().decode(b64bytes(s));
 }
 
-// Signs approval and undo links, keyed by the GitHub token so there's no extra secret to set up.
+// Signs approval and undo links, keyed by the GitHub token so there's no extra secret to set up. Without a token of
+// its own, the site asks the hub, and the site's repository is part of what's signed so a link only works on its site.
 async function sign(env, text) {
+  if (!env.GITHUB_TOKEN && env.TELEGRAM_HUB) {
+    const res = await env.TELEGRAM_HUB.fetch("https://hub/sign", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: `${CLIENT.repo}|${text}` }),
+    });
+    if (!res.ok) throw new Error(`hub sign: ${res.status} ${await res.text()}`);
+    return (await res.json()).sig;
+  }
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.GITHUB_TOKEN), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   const mac = new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(text)));
   return [...mac.slice(0, 16)].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -1116,26 +1134,27 @@ async function sign(env, text) {
 
 // ---------- GitHub ----------
 
-function githubHeaders(env, hasBody) {
-  return {
-    Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-    Accept: "application/vnd.github+json",
+// GitHub calls use the site's own GITHUB_TOKEN secret if it has one (older setups), otherwise the WebBrew hub's key.
+function githubFetch(env, path, init = {}, accept = "application/vnd.github+json") {
+  const headers = {
+    Accept: accept,
     "User-Agent": "webbrew-chat-to-change",
     "X-GitHub-Api-Version": "2022-11-28",
-    ...(hasBody ? { "Content-Type": "application/json" } : {}),
+    ...(init.body ? { "Content-Type": "application/json" } : {}),
   };
+  if (env.GITHUB_TOKEN) return fetch(`https://api.github.com${path}`, { ...init, headers: { ...headers, Authorization: `Bearer ${env.GITHUB_TOKEN}` } });
+  if (env.TELEGRAM_HUB) return env.TELEGRAM_HUB.fetch(`https://hub/github${path}`, { ...init, headers });
+  return Promise.reject(new Error("No GitHub key: set GITHUB_TOKEN on the WebBrew hub"));
 }
 
 async function github(env, path, init = {}) {
-  const res = await fetch(`https://api.github.com${path}`, { ...init, headers: githubHeaders(env, Boolean(init.body)) });
+  const res = await githubFetch(env, path, init);
   if (!res.ok) throw new Error(`GitHub ${init.method || "GET"} ${path}: ${res.status} ${await res.text()}`);
   return res.status === 204 ? null : res.json();
 }
 
 async function readFile(env, path) {
-  const res = await fetch(`https://api.github.com/repos/${CLIENT.repo}/contents/${path}?ref=main`, {
-    headers: { ...githubHeaders(env, false), Accept: "application/vnd.github.raw+json" },
-  });
+  const res = await githubFetch(env, `/repos/${CLIENT.repo}/contents/${path}?ref=main`, {}, "application/vnd.github.raw+json");
   if (!res.ok) throw new Error(`GitHub read ${path}: ${res.status}`);
   return res.text();
 }

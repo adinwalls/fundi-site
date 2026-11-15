@@ -22,7 +22,7 @@
   "vars": {
     // Zero Trust team domain (the same WebBrew team as the other sites) and the Access application's AUD tag.
     "ACCESS_TEAM_DOMAIN": "muddy-band-9851.cloudflareaccess.com",
-    "ACCESS_AUD": "2cb448e1382a9e81ddc4736a9693c4c95e95989a97a3f3f37934c7609615a749"
+    "ACCESS_AUD": "7e7f448a85356bef2bc0d8f60bd7bc3386ce531b8f2272d5e69cf0b07d3eda71,2cb448e1382a9e81ddc4736a9693c4c95e95989a97a3f3f37934c7609615a749"
   },
   // Secret (set in the Cloudflare dashboard, not here): GITHUB_TOKEN, a fine-grained token on adinwalls/fundi-site
   // with Contents, Pull requests and Issues set to read and write. No Telegram secret: the WebBrew hub has it.
