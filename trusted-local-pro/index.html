@@ -469,6 +469,19 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
 #promiseBand #h-expect{color:#222b30 !important}
 #quoteStatus{margin:12px 0 0;font-size:.95rem;color:#9b2c2c !important}
 #quoteStatus:empty{display:none}
+
+/* Reviews slider */
+.rev-grid{display:flex !important;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:2px}
+.rev-grid::-webkit-scrollbar{display:none}
+.rev-grid .rev{flex:0 0 calc((100% - 40px)/3);scroll-snap-align:start}
+@media (max-width:900px){.rev-grid .rev{flex-basis:100%}}
+.rev-ctl{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:22px}
+.rev-ctl button{border:1px solid var(--rule);background:var(--white);color:#222b30;width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer;line-height:1}
+.rev-ctl button:hover{background:var(--accent-tint)}
+.rev-dots{display:flex;gap:4px}
+.rev-dots button{width:24px;height:24px;border:0;background:transparent;display:grid;place-items:center;border-radius:50%}
+.rev-dots button::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--sage);opacity:.45}
+.rev-dots button[aria-current="true"]::after{background:var(--accent-dark);opacity:1}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -613,7 +626,10 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>Very happy with my bathroom renovation! Excellent skills, advice and workmanship. Attention to detail, cleanliness and professional communication. Ronald is willing to go the extra mile to ensure a job well done. I can highly recommend Fundi Repairs and Maintenance. Thank you Ronald and team!</blockquote><footer><span class="av">S</span><span><b>Sharon</b>Google review</span></footer></article>
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>I must thank the Fundi clan for the professional way that this undertaking was approached. The advice given as to how to approach the installation of the shower to replace the bath, was truly professional.<br>The workers were diligent, courteous and worked neatly. I would highly recommended this team.</blockquote><footer><span class="av">D</span><span><b>Dorothy de la Rosa</b>Google review</span></footer></article>
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>New gutters &amp; facia boards! Very quick service &amp; easy process to get our gutters fixed. Highly recommend!</blockquote><footer><span class="av">R</span><span><b>Rita Walls</b>Google review</span></footer></article>
+              <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>At very short notice they were willing to assist me over December . Very quick and professional</blockquote><footer><span class="av">G</span><span><b>Gert Mills</b>Google review</span></footer></article>
+        <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>Professional, friendly and affordable service. Very happy with the work they have done. Will definitely use them again.</blockquote><footer><span class="av">M</span><span><b>Madelein Combrinck</b>Google review</span></footer></article>
       </div>
+      <div class="rev-ctl" id="revCtl"><button type="button" id="revPrev" aria-label="Previous reviews">&#8249;</button><div class="rev-dots" id="revDots"></div><button type="button" id="revNext" aria-label="Next reviews">&#8250;</button></div>
     </div>
   </section>
 
@@ -899,5 +915,28 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
         status.textContent='Sorry, that did not send. Please try again, or call or WhatsApp 079 827 8123, or email fundimaintenance@outlook.com.';
       });
   });
+})();
+
+/* Reviews slider */
+(function(){
+  var g=document.querySelector('.rev-grid'),dots=document.getElementById('revDots'),ctl=document.getElementById('revCtl');
+  if(!g||!dots)return;
+  var cards=[],dotBtns=[],paused=false;
+  function per(){return window.innerWidth>900?3:1}
+  function pages(){return Math.max(1,cards.length-per()+1)}
+  function idx(){var step=cards[0].offsetWidth+20;return Math.min(pages()-1,Math.round(g.scrollLeft/step))}
+  function go(i){var n=pages();i=(i+n)%n;g.scrollTo({left:cards[i].offsetLeft-cards[0].offsetLeft,behavior:'smooth'})}
+  function build(){cards=[].slice.call(g.children);dots.innerHTML='';dotBtns=[];var n=pages();ctl.style.display=n<2?'none':'';
+    for(var i=0;i<n;i++){(function(i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show review '+(i+1));b.onclick=function(){go(i)};dots.appendChild(b);dotBtns.push(b)})(i)}mark()}
+  function mark(){var c=idx();dotBtns.forEach(function(b,i){b.setAttribute('aria-current',i===c?'true':'false')})}
+  document.getElementById('revPrev').onclick=function(){go(idx()-1)};
+  document.getElementById('revNext').onclick=function(){go(idx()+1)};
+  g.addEventListener('scroll',mark,{passive:true});
+  ['mouseenter','focusin','touchstart'].forEach(function(e){g.parentNode.addEventListener(e,function(){paused=true})});
+  ['mouseleave','focusout'].forEach(function(e){g.parentNode.addEventListener(e,function(){paused=false})});
+  window.addEventListener('resize',build);
+  if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    setInterval(function(){if(!paused&&g.offsetParent!==null&&!document.hidden)go(idx()+1)},6000)}
+  build();
 })();
 </script>
