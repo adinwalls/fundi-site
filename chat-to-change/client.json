@@ -1,6 +1,6 @@
 {
   "name": "Fundi Maintenance",
-  "domain": "fundi-site.adinwalls.workers.dev",
+  "domain": "fundimaintenance.co.za",
   "editor": "Adin",
   "timezone": "Africa/Johannesburg",
   "repo": "adinwalls/fundi-site",
@@ -8,7 +8,7 @@
   "previewHost": "fundi-site.adinwalls.workers.dev",
   "admins": ["adinwalls@gmail.com"],
   "clients": ["fundimaintenance@outlook.com"],
-  "alertFrom": "tickets@fundi-site.adinwalls.workers.dev",
+  "alertFrom": "tickets@fundimaintenance.co.za",
   "telegramChat": "",
   "webbrewMark": true,
   "theme": {
