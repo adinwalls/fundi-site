@@ -489,6 +489,9 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split{align-items:center}
 #quickWrap h2{margin-top:0}
 main > div:nth-of-type(1) > section:nth-of-type(4) .split .copy{display:block}
 main > div:nth-of-type(1) > section:nth-of-type(4) .split .copy .btn-row{margin-top:24px !important}
+main > div:nth-of-type(1) > section:nth-of-type(4) .split{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:center}
+#teamPhoto{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;display:block}
+@media (max-width:860px){main > div:nth-of-type(1) > section:nth-of-type(4) .split{grid-template-columns:1fr}#teamPhoto{aspect-ratio:4/3;object-position:center 60%}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -585,19 +588,7 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split .copy .btn-row{margin-
 
   <section class="band-paper">
     <div class="wrap split">
-      <div class="quick" id="quickWrap">
-        <h2 class="caps">Quick quote</h2>
-        <p class="sub">Leave your number and we'll call you back, usually the same day.</p>
-        <form id="quickForm" novalidate>
-          <div><label for="qq-name">Your name</label><input id="qq-name" autocomplete="name" placeholder="e.g. Thandi Mokoena"></div>
-          <div><label for="qq-phone">Phone number</label><input id="qq-phone" type="tel" autocomplete="tel" placeholder="e.g. 082 123 4567"></div>
-          <div><label for="qq-svc">What do you need?</label>
-            <select id="qq-svc"><option>Painting</option><option>Waterproofing</option><option>Building &amp; renovations</option><option>Maintenance &amp; repairs</option><option>Commercial property work</option><option>Not sure yet</option></select>
-          </div>
-          <button class="btn btn-accent" type="submit">Contact me</button>
-          <p class="fine">Opens WhatsApp to 079 827 8123 with your details. Press send there.</p>
-        </form>
-      </div>
+      <img id="teamPhoto" src="team-painting.jpg" alt="Two Fundi painters preparing and painting a wall inside a home" loading="lazy">
       <div class="copy">
         <p class="eyebrow" style="color:#d6c284">Why George property owners choose us</p>
         <h2 class="caps">Budget-minded, never at the cost of quality</h2>
@@ -874,19 +865,6 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split .copy .btn-row{margin-
   function clean(s){return s.replace(/[<>&"]/g,'')}
   function need(id,msg){var el=document.getElementById(id);if(!el.value.trim()){el.classList.add('err');el.placeholder=msg;el.focus();return null}el.classList.remove('err');return el.value.trim()}
 
-  document.getElementById('quickForm').addEventListener('submit',function(e){
-    e.preventDefault();
-    var n=need('qq-name','Please add your name');if(!n)return;
-    if(!need('qq-phone','Please add a number'))return;
-    var ph=document.getElementById('qq-phone').value.trim();
-    var svc=document.getElementById('qq-svc').value;
-    var msg='Quick quote request%0AName: '+encodeURIComponent(n)+'%0APhone: '+encodeURIComponent(ph)+'%0AService: '+encodeURIComponent(svc);
-    window.open('https://wa.me/27798278123?text='+msg,'_blank','noopener');
-    var f=this;f.querySelectorAll('input,select,button').forEach(function(x){x.disabled=true});
-    var d=document.createElement('div');d.className='sent';
-    d.innerHTML='<p class="eyebrow">Sent</p><h3>Thanks, '+clean(n)+'</h3><p>WhatsApp has opened with your details ready. Press send there and we will get back to you, usually the same day.</p>';
-    f.replaceWith(d);
-  });
   document.getElementById('quoteForm').addEventListener('submit',function(e){
     e.preventDefault();
     var form=this,status=document.getElementById('quoteStatus');
