@@ -18,7 +18,7 @@ const PAGES = CLIENT.pages;
 const WEBBREW_MARK = `<footer class="webbrew"><span>Website care by</span><img src="/c2c-assets/webbrew.png" alt="WebBrew"></footer>`;
 const MAX_PHOTO = 3_000_000; // base64 characters, about 2.2 MB
 const MAX_ATTACHMENTS = 3;
-const MONTHLY_CRON = "0 5 1 * *"; // must match wrangler.jsonc
+const MONTHLY_CRON = "0 5 1 * *"; // the separate monthly cron older sites still have (before 1.7.0)
 const READY = "awaiting-approval", ANNOUNCED = "announced"; // labels on pull requests Claude prepares
 const ALL_WAITING = `<a href="https://${CLIENT.domain}/api/approvals">Everything waiting for approval</a>`; // line at the end of Telegram approval messages
 const SIGNIN_PARAM = "signin"; // added to the address after clearing a stale login, so it happens only once
@@ -105,9 +105,15 @@ export default {
     }
   },
 
-  // Cron triggers in wrangler.jsonc: the monthly summary, and a frequent check for changes waiting for approval.
+  // One cron trigger in wrangler.jsonc, every 15 minutes (a Cloudflare free account allows only 5 cron triggers in all,
+  // so each site uses one). Each run checks for changes waiting for approval; the run at 05:00 UTC on the 1st also
+  // sends the monthly summary. A site that still has the separate monthly cron from before 1.7.0 should remove it
+  // (see CHANGELOG), or it gets the summary twice.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(event.cron === MONTHLY_CRON ? monthlySummary(env) : announceReadyChanges(env));
+    if (event.cron === MONTHLY_CRON) return void ctx.waitUntil(monthlySummary(env));
+    const t = new Date(event.scheduledTime);
+    const monthlyDue = t.getUTCDate() === 1 && t.getUTCHours() === 5 && t.getUTCMinutes() < 15;
+    ctx.waitUntil(Promise.all([announceReadyChanges(env), monthlyDue ? monthlySummary(env) : null]));
   },
 };
 
