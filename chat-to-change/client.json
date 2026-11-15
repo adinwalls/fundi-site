@@ -1,0 +1,46 @@
+{
+  "name": "Fundi Maintenance",
+  "domain": "fundi-site.adinwalls.workers.dev",
+  "editor": "Adin",
+  "timezone": "Africa/Johannesburg",
+  "repo": "adinwalls/fundi-site",
+  "siteDir": "site",
+  "previewHost": "fundi-site.adinwalls.workers.dev",
+  "admins": ["adinwalls@gmail.com"],
+  "clients": ["fundimaintenance@outlook.com"],
+  "alertFrom": "tickets@fundi-site.adinwalls.workers.dev",
+  "telegramChat": "",
+  "webbrewMark": true,
+  "theme": {
+    "logo": "/logo-full.png",
+    "favicon": "/logo-brush.png",
+    "fontsUrl": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500&display=swap",
+    "display": "'Cormorant Garamond', 'EB Garamond', Garamond, 'Times New Roman', serif",
+    "body": "Jost, Futura, 'Century Gothic', 'Helvetica Neue', Arial, sans-serif",
+    "bg": "#ffffff",
+    "line": "#dce2de",
+    "muted": "#5f6b65",
+    "accent": "#465d4f",
+    "accentInk": "#33463b",
+    "accentSoft": "#e4e9e6"
+  },
+  "pages": ["Home", "Services", "About", "Free quote", "Every page (header, footer, call bar)", "Not sure"],
+  "slots": [
+    { "id": "home-hero", "label": "Home: main photo", "page": "/", "file": "hero-photo.jpg", "width": 900, "height": 828, "files": ["site/index.html"] },
+    { "id": "home-team", "label": "Home: team painting photo", "page": "/", "file": "team-painting.jpg", "width": 960, "height": 1280, "files": ["site/index.html"] },
+    { "id": "about-ronald", "label": "About: Ronald's photo", "page": "/#about", "file": "ronald.jpg", "width": 900, "height": 1141, "files": ["site/index.html"] },
+    { "id": "george-photo", "label": "George & surrounds photo", "page": "/", "file": "painting-ladder-new.jpg", "width": 646, "height": 861, "files": ["site/index.html"] }
+  ],
+  "specials": {
+    "page": "/",
+    "insertAfter": "section.quick-band",
+    "file": "chat-to-change/specials.json"
+  },
+  "articles": {
+    "path": "/articles/",
+    "heading": "Articles",
+    "template": "site/index.html",
+    "content": "main",
+    "file": "chat-to-change/articles.json"
+  }
+}
