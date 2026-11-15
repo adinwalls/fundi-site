@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Website changes | {{NAME}}</title>
+<link rel="icon" href="{{FAVICON}}" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="{{FONTS_URL}}">
+<style>
+/* One narrow column: four ways to make a change, then specials and the request list. Colours and fonts come from the client's client.json. */
+:root {
+  --bg: {{BG}}; --surface: #ffffff; --fg: #212121; --muted: {{MUTED}}; --line: {{LINE}};
+  --accent: {{ACCENT}}; --accent-ink: {{ACCENT_INK}}; --accent-soft: {{ACCENT_SOFT}}; --on-accent: #ffffff;
+  --ok: #2f7a4f; --ok-soft: #e1f1e7; --warn: #8a5a00; --warn-soft: #fbefd6; --info: #2a6f9e; --info-soft: #e0eef7;
+  --display: {{DISPLAY}};
+  --body: {{BODY}};
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 32px 16px 40px; display: grid; gap: 28px; }
+header { display: grid; gap: 10px; }
+header img { width: 150px; height: auto; }
+h1 { font-family: var(--display); font-weight: 300; font-size: clamp(30px, 6vw, 42px); color: var(--accent); letter-spacing: -1px; line-height: 1.15; margin: 0; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0; }
+.lede { color: var(--muted); margin: 0; max-width: 60ch; }
+a { color: var(--accent-ink); }
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+@media (max-width: 560px) { .tabs { grid-template-columns: repeat(2, 1fr); } }
+.tabs button { padding: 14px 8px; letter-spacing: 1px; font-size: 12px; background: var(--surface); color: var(--accent-ink); }
+.tabs button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: grid; gap: 14px; min-width: 0; }
+.chat { display: grid; gap: 10px; max-height: 440px; overflow-y: auto; }
+.chat:empty { display: none; }
+.msg { padding: 10px 14px; border-radius: 12px; max-width: 88%; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.me { justify-self: end; background: var(--accent-soft); }
+.msg.ai { justify-self: start; background: var(--bg); border: 1px solid var(--line); }
+.msg.thinking { color: var(--muted); font-style: italic; }
+label, .label { font-weight: 700; font-size: 14px; }
+.field { display: grid; gap: 6px; }
+textarea, input[type="text"], input[type="date"] { width: 100%; font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+textarea { min-height: 96px; resize: vertical; }
+textarea.long { min-height: 320px; }
+textarea:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+button, .filebtn { font: inherit; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 11px 20px; cursor: pointer; border: 1px solid var(--accent); border-radius: 0; }
+button.primary, .filebtn { background: var(--accent); color: var(--on-accent); }
+button.ghost { background: transparent; color: var(--accent-ink); }
+button:disabled { opacity: .5; cursor: default; }
+.filebtn { display: inline-block; }
+.filebtn.ghost { background: transparent; color: var(--accent-ink); }
+.filebtn input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.filebtn:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hint { font-size: 14px; color: var(--muted); }
+.proposal { border: 1px dashed var(--accent); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; background: var(--accent-soft); }
+.proposal dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+.proposal dt { font-size: 14px; color: var(--muted); }
+.proposal dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.slot { display: grid; gap: 6px; padding: 6px; background: var(--bg); border: 2px solid transparent; border-radius: 10px; text-align: left; text-transform: none; letter-spacing: 0; font-weight: 600; font-size: 13px; color: var(--fg); }
+.slot img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; display: block; background: var(--line); }
+.slot[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.compare figure { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.compare figcaption { font-size: 13px; color: var(--muted); }
+.compare img { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); display: block; }
+.special-preview { border: 1px solid var(--line); background: var(--surface); max-width: 320px; }
+.special-preview img { width: 100%; display: block; }
+.special-preview div { padding: 14px 16px; }
+.special-preview h3 { font-family: var(--display); font-weight: 300; color: var(--accent); font-size: 26px; line-height: 1.2; margin: 0 0 6px; overflow-wrap: anywhere; }
+.special-preview p { margin: 0 0 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.log { display: grid; gap: 12px; }
+.item { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; min-width: 0; }
+.item-top { display: flex; gap: 10px; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+.item-title { font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.meta { font-size: 14px; color: var(--muted); }
+.pill { font-size: 12px; font-weight: 700; letter-spacing: .04em; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.s-queued, .s-scheduled { background: var(--info-soft); color: var(--info); }
+.s-working, .s-review { background: var(--accent-soft); color: var(--accent-ink); }
+.s-done, .s-live { background: var(--ok-soft); color: var(--ok); }
+.s-question { background: var(--warn-soft); color: var(--warn); }
+.s-cancelled, .s-ended { background: var(--line); color: var(--muted); }
+.note { background: var(--bg); border-radius: 8px; padding: 8px 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.empty { color: var(--muted); border: 1px dashed var(--line); border-radius: 12px; padding: 18px; }
+.banner { background: var(--warn-soft); color: var(--warn); border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+.banner button { margin-left: 6px; padding: 8px 14px; }
+.answer { display: grid; gap: 8px; }
+.answer textarea { min-height: 64px; }
+.admin { border-style: dashed; }
+.pics { display: flex; flex-wrap: wrap; gap: 8px; }
+.pics:empty { display: none; }
+.pic { position: relative; width: 96px; height: 72px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: var(--bg); }
+.pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pic button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; padding: 0; border-radius: 50%; letter-spacing: 0; font-size: 16px; line-height: 1; background: rgba(0,0,0,.65); color: #fff; border: 0; }
+.msg .pics { margin-top: 8px; }
+.msg .pic { width: 72px; height: 54px; }
+textarea.drop { outline: 2px dashed var(--accent); outline-offset: 2px; }
+.webbrew { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); padding: 0 16px 32px; }
+.webbrew img { height: 22px; width: auto; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="/"><img src="{{LOGO}}" alt="{{NAME}}"></a>
+    <h1>website changes.</h1>
+    <p class="lede">Change a photo, add a special, write an article, or ask for anything else on {{DOMAIN}}. Every change is checked before it goes live.</p>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <div class="tabs" role="tablist" aria-label="What would you like to do?">
+    <button type="button" role="tab" id="tab-photo" aria-controls="panel-photo" aria-selected="true">Change a photo</button>
+    <button type="button" role="tab" id="tab-special" aria-controls="panel-special" aria-selected="false">Add a special</button>
+    <button type="button" role="tab" id="tab-article" aria-controls="panel-article" aria-selected="false">Add an article</button>
+    <button type="button" role="tab" id="tab-chat" aria-controls="panel-chat" aria-selected="false">Chat to change</button>
+  </div>
+
+  <!-- Change a photo -->
+  <section class="card" id="panel-photo" role="tabpanel" aria-labelledby="tab-photo">
+    <h2>Change a photo</h2>
+    <p class="hint">1. Tap the photo you'd like to replace.</p>
+    <div id="slots" class="slots"></div>
+    <div id="photo-step2" hidden style="display:grid;gap:14px">
+      <div class="row">
+        <span class="hint">2. Choose the new photo.</span>
+        <label class="filebtn">Choose photo<input type="file" id="photo-file" accept="image/*"></label>
+      </div>
+      <div id="photo-compare" class="compare" hidden>
+        <figure><figcaption>Now</figcaption><img id="photo-before" alt=""></figure>
+        <figure><figcaption>New (trimmed to fit)</figcaption><img id="photo-after" alt=""></figure>
+      </div>
+      <div class="field" id="photo-note-wrap" hidden>
+        <label for="photo-note">Anything {{EDITOR}} should know? (optional)</label>
+        <input type="text" id="photo-note" maxlength="500">
+      </div>
+      <div class="row">
+        <button id="photo-send" class="primary" type="button" disabled>Send for approval</button>
+        <span id="photo-status" class="hint" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add a special -->
+  <section class="card" id="panel-special" role="tabpanel" aria-labelledby="tab-special" hidden>
+    <h2>Add a special</h2>
+    <p class="hint">It appears on the Specials page on the start date and disappears by itself after the end date.</p>
+    <div class="field"><label for="sp-title">Heading</label><input type="text" id="sp-title" maxlength="80" placeholder="e.g. 20% off all frames"></div>
+    <div class="field"><label for="sp-text">Details</label><textarea id="sp-text" maxlength="600" placeholder="e.g. Choose any frame in store and get 20% off. Not valid with other specials."></textarea></div>
+    <div class="dates">
+      <div class="field"><label for="sp-from">Starts</label><input type="date" id="sp-from"></div>
+      <div class="field"><label for="sp-to">Ends</label><input type="date" id="sp-to"></div>
+    </div>
+    <div class="row"><label class="filebtn">Add a photo (optional)<input type="file" id="sp-file" accept="image/*"></label><button id="sp-nophoto" class="ghost" type="button" hidden>Remove photo</button></div>
+    <span class="label">How it will look</span>
+    <div class="special-preview"><img id="sp-img" alt="" hidden><div><h3 id="sp-h">Your heading</h3><p id="sp-p">Your details</p><p class="hint" id="sp-until"></p></div></div>
+    <div class="row">
+      <button id="sp-send" class="primary" type="button">Send for approval</button>
+      <span id="sp-status" class="hint" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <!-- Add an article: their words, laid out as a page of the site in its own fonts -->
+  <section class="card" id="panel-article" role="tabpanel" aria-labelledby="tab-article" hidden>
+    <h2>Add an article</h2>
+    <p class="hint">Write or paste your article below. It becomes a new page on your website with a title, neat paragraphs and your pictures, in your website's own style. Your words are kept exactly as you wrote them.</p>
+    <div class="field"><label for="ar-title">Title (optional)</label><input type="text" id="ar-title" maxlength="120" placeholder="Leave it empty and one will be suggested"></div>
+    <div class="field"><label for="ar-text">Your article</label><textarea id="ar-text" class="long" maxlength="12000" placeholder="Write or paste your text here. Leave an empty line between paragraphs."></textarea></div>
+    <div id="ar-pics" class="pics" aria-label="Pictures for the article"></div>
+    <div class="row">
+      <label class="filebtn ghost">Add a picture<input type="file" id="ar-file" accept="image/*" multiple></label>
+      <span class="hint">Up to 3. The first one goes at the top.</span>
+    </div>
+    <div class="row">
+      <button id="ar-send" class="primary" type="button">Send for approval</button>
+      <span id="ar-status" class="hint" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <!-- Anything else: AI chat that turns it into a clear request -->
+  <section class="card" id="panel-chat" role="tabpanel" aria-labelledby="tab-chat" hidden>
+    <h2>Chat to change</h2>
+    <div id="chat" class="chat" aria-live="polite"></div>
+    <div id="proposal" class="proposal" hidden>
+      <strong>Here's what I understood</strong>
+      <dl>
+        <dt>Page</dt><dd id="p-page"></dd>
+        <dt>Change</dt><dd id="p-summary"></dd>
+        <dt id="p-pics-l">Pictures</dt><dd id="p-pics"></dd>
+      </dl>
+      <span class="hint">If it's right, press Approve and it goes to {{EDITOR}}. If not, write what to adjust below.</span>
+      <div class="row">
+        <button id="send" class="primary" type="button">Approve</button>
+        <span id="status2" class="hint" aria-live="polite"></span>
+      </div>
+    </div>
+    <label for="input" id="input-lbl">What would you like changed?</label>
+    <textarea id="input" placeholder="e.g. Please change our Saturday hours to 9:00 to 13:00."></textarea>
+    <div id="pics" class="pics" aria-label="Pictures to send"></div>
+    <div class="row">
+      <label class="filebtn ghost">Add a picture<input type="file" id="pic-file" accept="image/*" multiple></label>
+      <span class="hint">or paste a screenshot into the box above. Up to 3.</span>
+    </div>
+    <div class="row">
+      <button id="ask" class="primary" type="button">Continue</button>
+      <button id="direct" class="ghost" type="button">Send as written</button>
+      <span id="status" class="hint" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section id="specials-wrap" aria-labelledby="specials-h" style="display:grid;gap:12px" hidden>
+    <h2 id="specials-h">Your specials</h2>
+    <div id="specials" class="log"></div>
+  </section>
+
+  <section aria-labelledby="log-h" style="display:grid;gap:12px">
+    <h2 id="log-h">Your requests</h2>
+    <div id="log" class="log"><div class="empty">Changes you send show up here: waiting for approval, done, or a question back to you.</div></div>
+  </section>
+
+  <section id="admin" class="card admin" hidden>
+    <h2>For WebBrew</h2>
+    <p class="hint" style="margin:0">Approve or reject everything that's waiting, in one place. Nothing goes live until you approve it.</p>
+    <div class="row"><a class="filebtn" href="/api/approvals" style="text-decoration:none">Changes waiting for approval</a></div>
+    <p class="hint" style="margin:0">Went live by mistake? This shows the last change to the site and lets you undo it in one tap.</p>
+    <div class="row"><a class="filebtn" href="/api/undo" style="text-decoration:none">Undo the last change</a></div>
+  </section>
+
+  <p class="hint"><span id="who"></span><a href="/cdn-cgi/access/logout">Log out</a></p>
+</div>
+{{WEBBREW}}
+
+<script>
+const STATUS = {
+  queued: ["Received", "s-queued"], working: ["Being prepared", "s-working"], review: ["Waiting for approval", "s-review"],
+  done: ["Done", "s-done"], question: ["Question for you", "s-question"], cancelled: ["Not used", "s-cancelled"],
+};
+const SPECIAL = { scheduled: ["Starts soon", "s-scheduled"], live: ["Showing now", "s-live"], ended: ["Ended", "s-ended"] };
+const $ = (id) => document.getElementById(id);
+let me = null;
+
+const SIGNED_OUT = "Your sign-in has run out. Tap \u201cSign in again\u201d at the top of the page.";
+
+async function api(path, body) {
+  const res = await fetch(path, { redirect: "manual", ...(body === undefined ? {} : {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  }) });
+  // 401: the Worker refused the login. A redirect: Cloudflare Access wants a fresh sign-in.
+  if (res.status === 401 || res.type === "opaqueredirect") { signedOut(); throw new Error(SIGNED_OUT); }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+  return data;
+}
+
+// ---------- Sign-in ----------
+// Never leave the page looking signed in when it isn't. Go straight to the sign-in screen, unless that would lose
+// something the person has typed; then show a "Sign in again" button so they can copy it first.
+function hasDraft() {
+  return [...document.querySelectorAll("textarea, input[type=text]")].some((e) => e.value.trim());
+}
+function signedOut() {
+  me = null;
+  $("who").textContent = "";
+  const banner = $("banner");
+  banner.hidden = false;
+  if (new URLSearchParams(location.search).has("signin")) {
+    banner.textContent = "We couldn't sign you in. Tap \u201cLog out\u201d at the bottom of the page, then open this page again. If it keeps happening, let WebBrew know.";
+    return;
+  }
+  if (!hasDraft()) { location.replace("/chat-to-change"); return; }
+  const go = el("button", "primary", "Sign in again"); go.type = "button";
+  go.onclick = () => location.replace("/chat-to-change");
+  banner.replaceChildren(el("span", "", "Your sign-in has run out. Copy anything you've typed, then "), go);
+  banner.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+// When the person comes back to a page left open (phones keep tabs for days), check the sign-in is still good.
+let hiddenAt = 0;
+function resumed() {
+  if (!me) return;
+  if (me.expires && Date.now() >= me.expires * 1000) signedOut();
+  else if (Date.now() - hiddenAt > 120000) loadTickets();
+}
+document.addEventListener("visibilitychange", () => { if (document.hidden) hiddenAt = Date.now(); else resumed(); });
+window.addEventListener("pageshow", (e) => { if (e.persisted) { hiddenAt = 0; resumed(); } });
+
+function fmt(iso) {
+  try { return new Date(iso).toLocaleString("en-ZA", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch { return ""; }
+}
+function fmtDay(ymd) {
+  if (!ymd) return "";
+  const [y, m, d] = ymd.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric" });
+}
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+// ---------- Tabs ----------
+const TABS = ["photo", "special", "article", "chat"];
+function showTab(name) {
+  for (const t of TABS) {
+    $("tab-" + t).setAttribute("aria-selected", String(t === name));
+    $("panel-" + t).hidden = t !== name;
+  }
+}
+TABS.forEach((t) => ($("tab-" + t).onclick = () => showTab(t)));
+
+// ---------- Photos: resized and trimmed in the browser, so uploads are small and fit the same space ----------
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("Couldn't open that photo. Please try a JPG or PNG."));
+    img.src = src;
+  });
+}
+// Draws the image trimmed to width:height (centre crop) and returns a JPEG data URL. Never enlarges.
+function render(img, width, height, quality) {
+  const sw = img.naturalWidth, sh = img.naturalHeight;
+  const ratio = width / height;
+  let cw = sw, ch = sw / ratio;
+  if (ch > sh) { ch = sh; cw = sh * ratio; }
+  const scale = Math.min(1, width / cw);
+  const c = document.createElement("canvas");
+  c.width = Math.round(cw * scale); c.height = Math.round(ch * scale);
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.drawImage(img, (sw - cw) / 2, (sh - ch) / 2, cw, ch, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", quality);
+}
+function fileUrl(file) { return URL.createObjectURL(file); }
+
+let slot = null, photo = null;
+function renderSlots() {
+  $("slots").replaceChildren(...me.slots.map((s) => {
+    const b = el("button", "slot"); b.type = "button"; b.setAttribute("aria-pressed", "false");
+    const img = el("img"); img.src = s.url; img.alt = ""; img.loading = "lazy";
+    b.append(img, el("span", "", s.label));
+    b.onclick = () => {
+      slot = s; photo = null;
+      document.querySelectorAll(".slot").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      $("photo-step2").hidden = false;
+      $("photo-compare").hidden = true; $("photo-note-wrap").hidden = true;
+      $("photo-send").disabled = true; $("photo-status").textContent = "";
+      $("photo-file").value = "";
+    };
+    return b;
+  }));
+}
+$("photo-file").onchange = async () => {
+  const f = $("photo-file").files[0];
+  if (!f || !slot) return;
+  $("photo-status").textContent = "Preparing…";
+  try {
+    const img = await loadImage(fileUrl(f));
+    const before = await loadImage(slot.url);
+    photo = {
+      image: render(img, slot.width, slot.height, 0.82),
+      thumb: render(img, 480, Math.round(480 * slot.height / slot.width), 0.7),
+      before: render(before, 480, Math.round(480 * slot.height / slot.width), 0.7),
+    };
+    $("photo-before").src = slot.url;
+    $("photo-after").src = photo.thumb;
+    $("photo-compare").hidden = false; $("photo-note-wrap").hidden = false;
+    $("photo-send").disabled = false;
+    $("photo-status").textContent = "";
+  } catch (e) { $("photo-status").textContent = e.message; }
+};
+$("photo-send").onclick = async () => {
+  if (!photo || !slot) return;
+  $("photo-send").disabled = true; $("photo-status").textContent = "Sending…";
+  try {
+    const r = await api("/api/photo", { slot: slot.id, note: $("photo-note").value, ...photo });
+    $("photo-status").textContent = `Sent (#${r.number}). {{EDITOR}} has been asked to approve it.`;
+    $("photo-compare").hidden = true; $("photo-note-wrap").hidden = true; $("photo-note").value = "";
+    photo = null;
+    loadTickets();
+  } catch (e) { $("photo-send").disabled = false; $("photo-status").textContent = e.message; }
+};
+
+// ---------- Specials ----------
+let spPhoto = null;
+function spPreview() {
+  $("sp-h").textContent = $("sp-title").value.trim() || "Your heading";
+  $("sp-p").textContent = $("sp-text").value.trim() || "Your details";
+  $("sp-until").textContent = $("sp-to").value ? "Until " + fmtDay($("sp-to").value) : "";
+}
+["sp-title", "sp-text", "sp-to"].forEach((id) => $(id).addEventListener("input", spPreview));
+$("sp-file").onchange = async () => {
+  const f = $("sp-file").files[0];
+  if (!f) return;
+  try {
+    const img = await loadImage(fileUrl(f));
+    spPhoto = { image: render(img, 1200, 800, 0.82), thumb: render(img, 480, 320, 0.7) };
+    $("sp-img").src = spPhoto.thumb; $("sp-img").hidden = false; $("sp-nophoto").hidden = false;
+  } catch (e) { $("sp-status").textContent = e.message; }
+};
+$("sp-nophoto").onclick = () => { spPhoto = null; $("sp-file").value = ""; $("sp-img").hidden = true; $("sp-nophoto").hidden = true; };
+$("sp-send").onclick = async () => {
+  $("sp-send").disabled = true; $("sp-status").textContent = "Sending…";
+  try {
+    const r = await api("/api/special", {
+      title: $("sp-title").value, text: $("sp-text").value, from: $("sp-from").value, to: $("sp-to").value, ...(spPhoto || {}),
+    });
+    $("sp-status").textContent = `Sent (#${r.number}). {{EDITOR}} has been asked to approve it.`;
+    ["sp-title", "sp-text", "sp-from", "sp-to"].forEach((id) => ($(id).value = ""));
+    $("sp-nophoto").onclick(); spPreview();
+    loadTickets();
+  } catch (e) { $("sp-status").textContent = e.message; }
+  $("sp-send").disabled = false;
+};
+function renderSpecials() {
+  const list = me.specials.filter((s) => s.status !== "ended").concat(me.specials.filter((s) => s.status === "ended").slice(-3));
+  $("specials-wrap").hidden = !list.length;
+  $("specials").replaceChildren(...list.map((s) => {
+    const [label, cls] = SPECIAL[s.status];
+    const item = el("article", "item");
+    const top = el("div", "item-top");
+    top.append(el("div", "item-title", s.title), el("span", "pill " + cls, label));
+    item.append(top, el("div", "meta", `${fmtDay(s.from)} to ${fmtDay(s.to)}`));
+    return item;
+  }));
+}
+
+// ---------- Chat to change ----------
+let turns = [], draft = null, busy = false, pics = [];
+function addMsg(role, text, extra, images) {
+  const d = el("div", "msg " + role + (extra ? " " + extra : ""), text);
+  if (images && images.length) d.append(picRow(images));
+  $("chat").append(d);
+  $("chat").scrollTop = $("chat").scrollHeight;
+  return d;
+}
+// ---------- Pictures: chosen, pasted or dropped; shrunk to a JPEG in the browser and sent with the request ----------
+const MAX_PICS = 3;
+function picRow(list, onRemove) {
+  const row = el("div", "pics");
+  list.forEach((src, i) => {
+    const box = el("div", "pic");
+    const img = el("img"); img.src = src; img.alt = `Picture ${i + 1}`;
+    box.append(img);
+    if (onRemove) {
+      const x = el("button", "", "×"); x.type = "button"; x.setAttribute("aria-label", `Remove picture ${i + 1}`);
+      x.onclick = () => onRemove(i);
+      box.append(x);
+    }
+    row.append(box);
+  });
+  return row;
+}
+function renderPics() { $("pics").replaceChildren(...picRow(pics, (i) => { pics.splice(i, 1); renderPics(); }).children); }
+// Keeps the whole picture (no trimming): longest side at most 1600px, which keeps screenshot text readable.
+function shrink(img) {
+  const scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+  return render(img, Math.round(img.naturalWidth * scale), Math.round(img.naturalHeight * scale), 0.85);
+}
+// Adds the image files to list (at most MAX_PICS), each made by make(img); say(text) shows a problem.
+async function addImages(list, files, make, say) {
+  const images = [...files].filter((f) => f.type.startsWith("image/"));
+  if (!images.length) return false;
+  for (const f of images) {
+    if (list.length >= MAX_PICS) { say(`You can add up to ${MAX_PICS} pictures.`); break; }
+    try { list.push(make(await loadImage(fileUrl(f)))); } catch (e) { say(e.message); }
+  }
+  return true;
+}
+async function addPics(files) {
+  const added = await addImages(pics, files, shrink, (t) => setBusy(false, t));
+  renderPics();
+  return added;
+}
+$("pic-file").onchange = async () => { await addPics($("pic-file").files); $("pic-file").value = ""; };
+$("input").addEventListener("paste", (e) => {
+  const files = [...(e.clipboardData?.files || [])];
+  if (files.some((f) => f.type.startsWith("image/"))) { e.preventDefault(); addPics(files); }
+});
+$("input").addEventListener("dragover", (e) => { e.preventDefault(); $("input").classList.add("drop"); });
+$("input").addEventListener("dragleave", () => $("input").classList.remove("drop"));
+$("input").addEventListener("drop", (e) => {
+  $("input").classList.remove("drop");
+  if (e.dataTransfer?.files?.length) { e.preventDefault(); addPics(e.dataTransfer.files); }
+});
+
+function setBusy(b, text) {
+  busy = b;
+  ["ask", "direct", "send"].forEach((id) => ($(id).disabled = b));
+  // Shown next to both the Send request and Continue buttons, so it's in view on a phone whichever was tapped.
+  $("status").textContent = $("status2").textContent = text || "";
+}
+const LABEL_NEW = "What would you like changed?";
+const LABEL_ANSWER = "Your answer";
+const LABEL_ADJUST = "Anything to adjust? Write it here, or press Approve above.";
+function showProposal(p) {
+  draft = p;
+  $("p-page").textContent = p.page;
+  $("p-summary").textContent = p.summary;
+  $("p-pics").textContent = pics.length ? `${pics.length} attached` : "";
+  $("p-pics").hidden = $("p-pics-l").hidden = !pics.length;
+  $("proposal").hidden = false;
+  $("input-lbl").textContent = LABEL_ADJUST;
+  $("input").placeholder = "e.g. Make the gap a little smaller.";
+  $("ask").textContent = "Update";
+  $("ask").className = "ghost";
+  $("direct").hidden = true;
+  $("proposal").scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+function hideProposal(label) {
+  draft = null;
+  $("proposal").hidden = true;
+  $("input-lbl").textContent = label;
+  $("input").placeholder = label === LABEL_NEW ? "e.g. Please change our Saturday hours to 9:00 to 13:00." : "";
+  $("ask").textContent = "Continue";
+  $("ask").className = "primary";
+  $("direct").hidden = false;
+}
+function resetDraft() {
+  turns = []; pics = []; shown = 0;
+  renderPics();
+  $("chat").replaceChildren();
+  $("input").value = "";
+  hideProposal(LABEL_NEW);
+}
+// Typing "approve", "yes", "looks good" and so on while a summary is showing sends it, with no AI call.
+const APPROVE = /^(approved?|yes|yep|yeah|ok(ay)?|correct|perfect|great|that'?s (right|correct|it|fine|perfect)|looks (good|great|right|fine)|all good|go ahead|send( it)?|confirm(ed)?)\b[\s.!,]*(please|thanks?( you)?)?[\s.!]*$/i;
+let shown = 0; // pictures already shown in the chat
+async function ask() {
+  const typed = $("input").value.trim();
+  const fresh = pics.slice(shown);
+  if ((!typed && !fresh.length) || busy) return;
+  if (draft && !fresh.length && APPROVE.test(typed)) { $("input").value = ""; return sendRequest(draft); }
+  addMsg("me", typed, "", fresh);
+  shown = pics.length;
+  $("input").value = "";
+  // The assistant can't see pictures, so it's told how many came with this message.
+  const text = (typed || "(Picture attached.)") + (typed && fresh.length ? ` (${fresh.length === 1 ? "Picture" : fresh.length + " pictures"} attached.)` : "");
+  turns.push({ role: "user", content: text });
+  const thinking = addMsg("ai", "Thinking…", "thinking");
+  setBusy(true);
+  try {
+    const r = await api("/api/chat", { messages: turns });
+    thinking.remove();
+    // The summary goes into the conversation too, so an adjustment changes it rather than starting again.
+    turns.push({ role: "assistant", content: r.ready ? `${r.reply}\nSummary: ${r.summary}` : r.reply });
+    addMsg("ai", r.reply);
+    if (r.ready) showProposal({ page: r.page, summary: r.summary }); else hideProposal(LABEL_ANSWER);
+    setBusy(false);
+  } catch (e) {
+    thinking.remove();
+    turns.pop();
+    $("chat").lastChild && $("chat").lastChild.remove();
+    $("input").value = typed;
+    shown -= fresh.length;
+    setBusy(false, e.message + " You can also press Send as written.");
+  }
+  $("input").focus();
+}
+async function sendRequest(p) {
+  if (busy) return;
+  const original = turns.filter((t) => t.role === "user").map((t) => t.content).join("\n") || p.summary;
+  setBusy(true, "Sending…");
+  try {
+    const r = await api("/api/tickets", { page: p.page, summary: p.summary, original, images: pics });
+    resetDraft();
+    setBusy(false, `Sent as request #${r.number}. {{EDITOR}} has been notified.`);
+    loadTickets();
+  } catch (e) {
+    setBusy(false, e.message);
+  }
+}
+$("ask").onclick = ask;
+$("send").onclick = () => draft && sendRequest(draft);
+$("direct").onclick = () => {
+  const t = $("input").value.trim();
+  if (t || pics.length > shown) {
+    const words = t || "Please see the attached pictures.";
+    turns.push({ role: "user", content: words });
+    sendRequest({ page: draft ? draft.page : "Not sure", summary: draft ? draft.summary + " Also: " + words : words });
+  }
+  else if (draft) sendRequest(draft);
+};
+$("input").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask(); });
+
+// ---------- Articles ----------
+let arPics = []; // { image, thumb }: the picture for the page, and a small copy for its description and the approval message
+function renderArPics() {
+  $("ar-pics").replaceChildren(...picRow(arPics.map((p) => p.thumb), (i) => { arPics.splice(i, 1); renderArPics(); }).children);
+}
+const arPic = (img) => ({ image: shrink(img), thumb: render(img, 480, Math.round(480 * img.naturalHeight / img.naturalWidth), 0.7) });
+const arSay = (t) => ($("ar-status").textContent = t);
+async function addArPics(files) {
+  arSay("");
+  const added = await addImages(arPics, files, arPic, arSay);
+  renderArPics();
+  return added;
+}
+$("ar-file").onchange = async () => { await addArPics($("ar-file").files); $("ar-file").value = ""; };
+$("ar-text").addEventListener("paste", (e) => {
+  const files = [...(e.clipboardData?.files || [])];
+  if (files.some((f) => f.type.startsWith("image/"))) { e.preventDefault(); addArPics(files); }
+});
+$("ar-send").onclick = async () => {
+  if ($("ar-text").value.trim().length < 40) { arSay("Please write or paste the article first."); return; }
+  $("ar-send").disabled = true; arSay("Laying out your article… this can take a minute.");
+  try {
+    const r = await api("/api/article", { title: $("ar-title").value, text: $("ar-text").value, images: arPics });
+    arSay(`Sent (#${r.number}). {{EDITOR}} has been asked to approve it. Once it's live it will be at {{DOMAIN}}${r.url}`);
+    $("ar-title").value = ""; $("ar-text").value = ""; arPics = []; renderArPics();
+    loadTickets();
+  } catch (e) { arSay(e.message); }
+  $("ar-send").disabled = false;
+};
+
+// ---------- Requests ----------
+async function loadTickets() {
+  let data;
+  try { data = await api("/api/tickets"); } catch (e) { if (me) { $("banner").hidden = false; $("banner").textContent = e.message; } return; }
+  $("banner").hidden = true;
+  if (!data.tickets.length) return;
+  $("log").replaceChildren(...data.tickets.map((t) => {
+    const [label, cls] = STATUS[t.status] || STATUS.queued;
+    const item = el("article", "item");
+    const top = el("div", "item-top");
+    top.append(el("div", "item-title", `#${t.number} ${t.title}`), el("span", "pill " + cls, label));
+    item.append(top, el("div", "meta", "Sent " + fmt(t.createdAt) + (t.updatedAt !== t.createdAt ? " · updated " + fmt(t.updatedAt) : "")));
+    if (t.note) item.append(el("div", "note", t.note));
+    if (t.status === "question") {
+      const box = el("div", "answer");
+      const ta = el("textarea"); ta.setAttribute("aria-label", "Your answer"); ta.placeholder = "Your answer";
+      const b = el("button", "primary", "Send answer"); b.type = "button";
+      b.onclick = async () => {
+        const a = ta.value.trim(); if (!a) return;
+        b.disabled = true;
+        try { await api(`/api/tickets/${t.number}/reply`, { text: a }); loadTickets(); }
+        catch (e) { b.disabled = false; b.textContent = "Didn't send, try again"; }
+      };
+      const row = el("div", "row"); row.append(b);
+      box.append(ta, row); item.append(box);
+    }
+    return item;
+  }));
+}
+
+async function start() {
+  try { me = await api("/api/me"); }
+  catch (e) { if (e.message !== SIGNED_OUT) { $("banner").hidden = false; $("banner").textContent = e.message; } return; }
+  if (location.search) history.replaceState(null, "", "/chat-to-change"); // drop ?signin=1 once signed in
+  $("who").textContent = `Signed in as ${me.email}. `;
+  renderSlots();
+  renderSpecials();
+  $("admin").hidden = !me.admin;
+  loadTickets();
+  setInterval(() => { if (!document.hidden && me) loadTickets(); }, 60000);
+}
+start();
+</script>
+</body>
+</html>

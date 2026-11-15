@@ -1,7 +1,31 @@
+// Cloudflare Workers Builds config.
+// The static site in site/ is served as Worker assets. chat-to-change/worker.js runs first for the private
+// /chat-to-change page, /api/*, and the home page (to add scheduled specials). Client settings: chat-to-change/client.json.
 {
   "name": "fundi-site",
+  "main": "chat-to-change/worker.js",
   "compatibility_date": "2026-11-01",
   "assets": {
-    "directory": "./"
-  }
+    "directory": "./site",
+    "binding": "ASSETS",
+    // The last entry must match chat-to-change/client.json specials.page.
+    "run_worker_first": ["/api/*", "/chat-to-change", "/chat-to-change/*", "/c2c-assets/*", "/"]
+  },
+  "rules": [{ "type": "Data", "globs": ["**/*.png"], "fallthrough": true }],
+  // Workers AI: instant chat replies and photo descriptions.
+  "ai": { "binding": "AI" },
+  // Monthly summary email, 07:00 South African time on the 1st (must match MONTHLY_CRON in worker.js), and a check
+  // every 15 minutes for changes Claude has prepared, which are posted to Telegram.
+  "triggers": { "crons": ["0 5 1 * *", "*/15 * * * *"] },
+  // Telegram alerts go through the WebBrew Telegram hub, which holds the bot's token and Adin's chat for every site.
+  "services": [{ "binding": "TELEGRAM_HUB", "service": "webbrew-telegram" }],
+  "vars": {
+    // Zero Trust team domain (the same WebBrew team as the other sites) and the Access application's AUD tag.
+    "ACCESS_TEAM_DOMAIN": "muddy-band-9851.cloudflareaccess.com",
+    "ACCESS_AUD": ""
+  },
+  // Secret (set in the Cloudflare dashboard, not here): GITHUB_TOKEN, a fine-grained token on adinwalls/fundi-site
+  // with Contents, Pull requests and Issues set to read and write. No Telegram secret: the WebBrew hub has it.
+  // Required by `wrangler preview`, which Workers Builds runs for non-production branches.
+  "previews": {}
 }

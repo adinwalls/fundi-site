@@ -2,11 +2,14 @@
 
 Website for Fundi Maintenance (George, Western Cape).
 
-For now this holds the design mockups for review:
+The live site is `site/` (served by Cloudflare as Worker assets, see `wrangler.jsonc`). It also holds the design mockups:
 
-- `index.html` – landing page linking to each mockup
-- `clean-studio/` – Option 1
-- `editorial-journal/` – Option 2
-- `trusted-local-pro/` – Option 3
+- `site/index.html` – the live home page (Trusted Local Pro)
+- `site/clean-studio/` – Option 1
+- `site/editorial-journal/` – Option 2
+- `site/trusted-local-pro/` – Option 3
 
-Once a design is chosen, its folder moves to the root and becomes the live site.
+
+## Chat to change
+
+`chat-to-change/` is WebBrew's shared chat-to-change Worker (never edit its `worker.js` here; it comes from adinwalls/webbrew-chat-to-change). It runs the private page at `/chat-to-change` where Fundi can change a photo, add a special or ask for a change. Settings: `chat-to-change/client.json`. Alerts go to Adin in Telegram through the shared WebBrew bot.
