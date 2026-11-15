@@ -497,6 +497,12 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split{grid-template-columns:
 #stepsBand .steps li:not(:last-child)::after{border-top-color:#9aabb6 !important}
 @media (min-width:900px){.split:has(#george-photo){grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:center}#george-photo{order:-1;justify-self:start !important;width:100% !important}}
 #george-photo{aspect-ratio:auto !important;height:auto !important;object-fit:contain !important}
+.rev-wrap{position:relative}
+.rev-wrap>button{position:absolute;top:50%;transform:translateY(-50%);z-index:2;border:0;background:var(--white);color:#222b30;width:44px;height:44px;border-radius:50%;font-size:1.5rem;line-height:1;cursor:pointer;box-shadow:0 2px 10px rgba(20,30,24,.22)}
+.rev-wrap>button:hover{background:var(--accent-tint)}
+#revPrev{left:-22px}#revNext{right:-22px}
+@media (max-width:900px){#revPrev{left:6px}#revNext{right:6px}}
+.rev-ctl{margin-top:14px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -625,6 +631,7 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split{grid-template-columns:
         <p class="eyebrow">Reviews</p>
         <h2 class="caps" style="color:#2d2926">What our customers say</h2>
       </div>
+      <div class="rev-wrap"><button type="button" id="revPrev" aria-label="Previous reviews">&#8249;</button><button type="button" id="revNext" aria-label="Next reviews">&#8250;</button>
       <div class="rev-grid">
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>Very happy with my bathroom renovation! Excellent skills, advice and workmanship. Attention to detail, cleanliness and professional communication. Ronald is willing to go the extra mile to ensure a job well done. I can highly recommend Fundi Repairs and Maintenance. Thank you Ronald and team!</blockquote><footer><span><b>Sharon</b>Google review</span></footer></article>
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>I must thank the Fundi clan for the professional way that this undertaking was approached. The advice given as to how to approach the installation of the shower to replace the bath, was truly professional.<br>The workers were diligent, courteous and worked neatly. I would highly recommended this team.</blockquote><footer><span><b>Dorothy de la Rosa</b>Google review</span></footer></article>
@@ -633,7 +640,8 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split{grid-template-columns:
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>Professional, friendly and affordable service. Very happy with the work they have done. Will definitely use them again.</blockquote><footer><span><b>Madelein Combrinck</b>Google review</span></footer></article>
         <article class="rev"><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span><blockquote>A great team. Easy to work with and very good communication &#128077;</blockquote><footer><span><b>Adin Walls</b>Google review</span></footer></article>
       </div>
-      <div class="rev-ctl" id="revCtl"><button type="button" id="revPrev" aria-label="Previous reviews">&#8249;</button><div class="rev-dots" id="revDots"></div><button type="button" id="revNext" aria-label="Next reviews">&#8250;</button></div>
+      </div>
+      <div class="rev-ctl" id="revCtl"><div class="rev-dots" id="revDots"></div></div>
     </div>
   </section>
 
@@ -917,7 +925,7 @@ main > div:nth-of-type(1) > section:nth-of-type(4) .split{grid-template-columns:
   function pages(){return Math.max(1,cards.length-per()+1)}
   function idx(){var step=cards[0].offsetWidth+20;return Math.min(pages()-1,Math.round(g.scrollLeft/step))}
   function go(i){var n=pages();i=(i+n)%n;g.scrollTo({left:cards[i].offsetLeft-cards[0].offsetLeft,behavior:'smooth'})}
-  function build(){cards=[].slice.call(g.children);dots.innerHTML='';dotBtns=[];var n=pages();ctl.style.display=n<2?'none':'';
+  function build(){cards=[].slice.call(g.children);dots.innerHTML='';dotBtns=[];var n=pages();ctl.style.display=n<2?'none':'';document.getElementById('revPrev').style.display=document.getElementById('revNext').style.display=n<2?'none':'';
     for(var i=0;i<n;i++){(function(i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show review '+(i+1));b.onclick=function(){go(i)};dots.appendChild(b);dotBtns.push(b)})(i)}mark()}
   function mark(){var c=idx();dotBtns.forEach(function(b,i){b.setAttribute('aria-current',i===c?'true':'false')})}
   document.getElementById('revPrev').onclick=function(){go(idx()-1)};
