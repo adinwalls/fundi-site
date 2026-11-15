@@ -20,8 +20,8 @@
   // Telegram alerts go through the WebBrew Telegram hub, which holds the bot's token and Adin's chat for every site.
   "services": [{ "binding": "TELEGRAM_HUB", "service": "webbrew-telegram" }],
   "vars": {
-    // Zero Trust team domain (e.g. webbrew.cloudflareaccess.com) and the Access application's AUD tag.
-    "ACCESS_TEAM_DOMAIN": "",
+    // Zero Trust team domain (the same WebBrew team as the other sites) and the Access application's AUD tag.
+    "ACCESS_TEAM_DOMAIN": "muddy-band-9851.cloudflareaccess.com",
     "ACCESS_AUD": ""
   },
   // Secret (set in the Cloudflare dashboard, not here): GITHUB_TOKEN, a fine-grained token on adinwalls/fundi-site
