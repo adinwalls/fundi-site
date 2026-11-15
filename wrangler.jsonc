@@ -14,9 +14,9 @@
   "rules": [{ "type": "Data", "globs": ["**/*.png"], "fallthrough": true }],
   // Workers AI: instant chat replies and photo descriptions.
   "ai": { "binding": "AI" },
-  // Monthly summary email, 07:00 South African time on the 1st (must match MONTHLY_CRON in worker.js), and a check
-  // every 15 minutes for changes Claude has prepared, which are posted to Telegram.
-  "triggers": { "crons": ["0 5 1 * *", "*/15 * * * *"] },
+  // One cron, every 15 minutes: posts changes Claude has prepared to Telegram, and sends the monthly summary email at
+  // 07:00 South African time on the 1st. A free Cloudflare account allows only 5 cron triggers in all, so keep it to one.
+  "triggers": { "crons": ["*/15 * * * *"] },
   // Telegram alerts go through the WebBrew Telegram hub, which holds the bot's token and Adin's chat for every site.
   "services": [{ "binding": "TELEGRAM_HUB", "service": "webbrew-telegram" }],
   "vars": {
