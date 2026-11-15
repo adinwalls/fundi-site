@@ -467,6 +467,8 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
 #h-project{font-size:clamp(1.1rem,2.4vw,1.6rem) !important}
 #stepsBand #h-howitworks{color:#222b30 !important}
 #promiseBand #h-expect{color:#222b30 !important}
+#quoteStatus{margin:12px 0 0;font-size:.95rem;color:#9b2c2c !important}
+#quoteStatus:empty{display:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -785,8 +787,10 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
             <div><label for="q-when">When</label><select id="q-when"><option>As soon as possible</option><option>Within a month</option><option>In 1 to 3 months</option><option>Just planning</option></select></div>
           </div>
           <div><label for="q-msg">Tell us about the job</label><textarea id="q-msg" placeholder="e.g. Repaint the outside of a two-storey house, some cracks to fix first."></textarea></div>
-          <div class="upload"><label for="q-photos" style="margin:0">Add photos (optional)</label>Photos help us quote faster.<input id="q-photos" type="file" accept="image/*" multiple></div>
-          <div class="submit-row"><button class="btn btn-accent" type="submit">Request my free quote</button><span class="ph-note">Mockup only: this form doesn't send yet.</span></div>
+          <div class="upload"><label style="margin:0">Photos help us quote faster</label>After you send this form, <a href="https://wa.me/27798278123" target="_blank" rel="noopener">send your photos on WhatsApp</a>.</div>
+          <input type="checkbox" name="botcheck" id="q-botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+          <div class="submit-row"><button class="btn btn-accent" type="submit">Request my free quote</button></div>
+          <p id="quoteStatus" role="alert" aria-live="polite"></p>
         </form>
       </div>
       <aside class="q-side">
@@ -846,11 +850,6 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
   });
 
   function clean(s){return s.replace(/[<>&"]/g,'')}
-  function confirmBox(wrap,name,extra){
-    var d=document.createElement('div');d.className='sent';
-    d.innerHTML='<p class="eyebrow">Preview</p><h3>Thanks, '+clean(name)+'</h3><p>'+extra+' In this mockup nothing was sent.</p>';
-    wrap.replaceChildren(d);
-  }
   function need(id,msg){var el=document.getElementById(id);if(!el.value.trim()){el.classList.add('err');el.placeholder=msg;el.focus();return null}el.classList.remove('err');return el.value.trim()}
 
   document.getElementById('quickForm').addEventListener('submit',function(e){
@@ -868,9 +867,39 @@ main section:not(.on-dark) :is(h1,h2,h3,h4,p,li,span,a,b,strong,label,small,figc
   });
   document.getElementById('quoteForm').addEventListener('submit',function(e){
     e.preventDefault();
+    var form=this,status=document.getElementById('quoteStatus');
+    status.textContent='';
     var n=need('q-name','Please add your name');if(!n)return;
-    if(!need('q-phone','Please add a number'))return;
-    confirmBox(document.getElementById('formWrap'),n,'On the live site this would go to fundimaintenance@outlook.com, and Fundi would reply to arrange a free site visit.');
+    var ph=need('q-phone','Please add a number');if(!ph)return;
+    if(document.getElementById('q-botcheck').checked)return;
+    function val(id){return document.getElementById(id).value.trim()}
+    var svcs=[].slice.call(form.querySelectorAll('fieldset input:checked')).map(function(x){return x.value});
+    var data={
+      access_key:'4c4b693d-292a-4646-b423-75504b789fc0',
+      subject:'New free quote request from '+n,
+      from_name:'Fundi Maintenance website',
+      name:n,phone:ph,
+      area:val('q-area'),
+      services:svcs.join(', ')||'Not specified',
+      property:val('q-prop'),
+      when:val('q-when'),
+      message:val('q-msg')||'(no message)'
+    };
+    if(val('q-email'))data.email=val('q-email');
+    var sub=form.querySelector('button[type=submit]'),label=sub.textContent;
+    sub.disabled=true;sub.textContent='Sending...';
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json()})
+      .then(function(j){
+        if(!j||!j.success)throw new Error('send failed');
+        var d=document.createElement('div');d.className='sent';
+        d.innerHTML='<p class="eyebrow">Sent</p><h3>Thanks, '+clean(n)+'</h3><p>We have your request and will reply to arrange a free site visit, usually within a working day. If you have photos, please send them on WhatsApp to 079 827 8123.</p>';
+        document.getElementById('formWrap').replaceChildren(d);
+      })
+      .catch(function(){
+        sub.disabled=false;sub.textContent=label;
+        status.textContent='Sorry, that did not send. Please try again, or call or WhatsApp 079 827 8123, or email fundimaintenance@outlook.com.';
+      });
   });
 })();
 </script>
